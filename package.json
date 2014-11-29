@@ -1,0 +1,9 @@
+{
+  "name": "my_Editor",
+  "main": "index.html",
+   "window": {
+    "toolbar": true,
+    "width": 660,
+    "height": 500
+  }
+}

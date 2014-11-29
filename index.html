@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Chrome repl</title>
+    <style type=text/css>
+    body {width: 100%; height:100%; margin: 0}
+    .iframe1 {
+      width: 100%;
+      height: 50%;
+      border: 0px;
+      position:absolute;
+      
+    }
+    .iframe2 {
+      width: 100%;
+      height: 50%;
+
+      border: 0px;      
+      position:absolute;
+      bottom:0px;            
+    }
+    </style>
+    <script src="lib/jquery.js"></script>
+    <script src='main.js'></script>
+  </head>
+  <body>
+
+      <iframe src="test.html" id="iframe1" class='iframe1' ></iframe>
+      <iframe src="editor.html" id="iframe2" class='iframe2'></iframe>
+      
+      <script>      
+       
+        /*iframe2.onload = function()
+         {       
+            iframe = $($('.iframe2').contents())
+            button = iframe.find('button')
+            editor = iframe.
+            button.on('click', function() {
+                console.log('I was clicked')
+                data = iframe.editor
+            })
+            console.log(' hook placed for: ' + button)
+            
+        }*/
+        </script>
+  </body>
+</html>
