@@ -21,6 +21,7 @@
     }
     </style>
     <script src="lib/jquery.js"></script>    
+    <script src="webdriver-support.js"></script>    
   </head>
   <body>
 
@@ -82,7 +83,7 @@
                     executionResult.html('ERROR: ' + error)
                 }        
             })
-            //button.trigger('click')
+            button.trigger('click')
             console.log(' hook placed for: ' + button)
             
             process.on('uncaughtException', function(err) 

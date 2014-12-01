@@ -57,15 +57,25 @@
         <div id=executionResult>...</div>
     </div>
     <pre id="editor">
+text = "node-webkit"
+browser.eval("window.location.href='http://www.google.com'", function() {
+    browser.elementByName('q', function(err, element){
+        element.clear(function(){
+            element.sendKeys(text, nop)
+            browser.elementByName('btnG', function(err, button) {
+                button.click(text)
+            });
+        });
+    });
+});
 var value = 'The answer is ' + 42;
 return value;
+
 </pre> 
     
   <script>      
-        //that = this;
         if(true)
-        {
-          // trigger extension
+        {          
           var langTools = ace.require("ace/ext/language_tools");
           var editor = ace.edit("editor");
           editor.session.setMode("ace/mode/javascript");
@@ -73,34 +83,8 @@ return value;
           editor.setOptions({
             enableBasicAutocompletion: true,
             enableSnippets: false        
-          });
-          //editor.setValue('var a="23" \n console.log(a)');
-          }
-      /*function executeCode()
-      {
-        try
-        {
-            code = editor.getSession().getValue();        
-            response = new Function(code)()
-            if(response)            
-                $('#executionResult').html(response)
-            else    
-                $('#executionResult').html('...')
-        }
-        catch(error)
-        {
-            $('#executionResult').html('ERROR: ' + error)
-        }
-        
-      }
-
-      $(function()
-        {
-            $('button').on('click', executeCode)                        
-            $('button').trigger('click')
-        })*/
-    
-
+          });          
+          }      
   </script>
 </body>
 </html>
