@@ -2,8 +2,69 @@
 <html>
   <head>
     <link  href="lib/foundation.css"  rel="stylesheet" />    
+    <script src='http://google-code-prettify.googlecode.com/svn/loader/run_prettify.js'></script>
   </head>
   <body>
-    <h1>this is a test page</h1>
+    <div class="row">  
+        <div class="large-8 columns">
+            <h3>this is an IFrame</h1>
+            <p>which you can access via the script below, using for example</p>
+            <pre class='prettyprint'>iframe1.src='http://www.google.com'</pre>
+            or here
+            <div>
+                <pre class='prettyprint' width='100%' height='300' id='code'>//show code here</pre>                
+            </div>
+        </div>
+        
+    </div>    
   </body>
 </html>
+
+<!--
+var Chrome = require('chrome-remote-interface') 
+
+var options = { host: '127.0.0.1', port: 9223}
+showTabs = function(error, tabs)
+    {
+        show(tabs)
+    }
+connect = function(next)
+    {
+        onCreate = function(chrome)
+        {
+            _chrome = chrome;
+            chrome.Network.enable();
+            chrome.Page.enable();
+            //chrome.close()
+            next()
+        }
+        Chrome(options, onCreate) 
+    }
+//_chrome = undefined    
+if (typeof(_chrome) == 'undefined')
+{
+    connect(function() { show('connnected')});   
+    return;
+}
+
+showData = function(err, data)
+    {
+        if (err)
+            show("ERROR: " + err)
+        else
+            iframe1.contentDocument.write(data)
+            //show()
+    }
+
+//return Chrome.listTabs(options, showTabs)
+//return _chrome.Page.getCookies(showData);
+_chrome.Page.getResourceTree(showData);
+
+
+
+//console.log('here') 
+//
+//callback(_chrome)
+-->
+
+<!--Page.captureScreenshot(function(err, image) {require('fs').writeFile('out.png', image.data, 'base64', function(err) {console.log(err);}); })-->

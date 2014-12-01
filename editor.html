@@ -2,13 +2,7 @@
 <html>
 <head>
     <title>editor</title>
-    
-    <script>
-        _require = require
-        var gui = require('nw.gui');
-        var win = gui.Window.get();
-    </script>
-    
+            
     
     <link  href="lib/foundation.css"  rel="stylesheet" />
     <script src="lib/ace.js"></script>
@@ -20,70 +14,55 @@
   body {
     overflow: hidden;
   }
-
-  #editArea
-  {
-    margin:10px
-    position: absolute;
-    bottom: 0px;
-    width:100%
-  }
-
-  .iframe1 {
-      width: 100%;
-      height: 50%;
-      border: 0px;
-      position:absolute;
-      
-    }
+  
     #editor {
       width: 70%;
-      height: 50%;
-
+      
+      top: 30px;
       border: 0px;      
       position:absolute;
       bottom:0px;            
       background: #9bb5de
     }
-    #reply
+    #response
     {
       width: 30%;
-      height: 50%;
-
+      top: 30px;
       right: 0px;      
       position:absolute;
       bottom:0px;            
-      background: #68776c
+      background: #68776c;
+      
     }
-    #reply b { text-align: center; padding: 10px }
+    #response b { color : white; padding: 10px }
     #executeButton
     {
-        width: 100%
+        
     }
     #executionResult
     {
         position:absolute;
         background: #f0f0f0;
         bottom:15px;
-        top:85px;
+        top:25px;
         right:15px;
         left:15px;        
     }
   </style>
 </head>
 <body>
-    
-     <iframe src="test.html" id="iframe1" class='iframe1' nwdisable  nwfaketop ></iframe>     
-    
-    <div id='reply'>
-        <button id='executeButton' class="button success tiny" href='execute'>EXECUTE COFFEE SCRIPT</button>
-        <b>Execution Result:</b>
-        <div id=executionResult>aaa</div>
+    <button id='executeButton' class="button success tiny" href='execute'>EXECUTE JAVASCRIPT</button>    
+    <div id='response'>        
+        <b>Return value:</b>
+        <div id=executionResult>...</div>
     </div>
-    <pre id="editor">aaaa</pre> 
+    <pre id="editor">
+var value = 'The answer is ' + 42;
+return value;
+</pre> 
     
   <script>      
-        that = this;
+        //that = this;
         if(true)
         {
           // trigger extension
@@ -95,9 +74,9 @@
             enableBasicAutocompletion: true,
             enableSnippets: false        
           });
-          editor.setValue('var a="23" \n console.log(a)');
+          //editor.setValue('var a="23" \n console.log(a)');
           }
-      function executeCode()
+      /*function executeCode()
       {
         try
         {
@@ -119,7 +98,7 @@
         {
             $('button').on('click', executeCode)                        
             $('button').trigger('click')
-        })
+        })*/
     
 
   </script>
