@@ -7,7 +7,7 @@ REPL to dynamicaly execute selenium webdriver scripts (from https://github.com/a
 git clone https://github.com/o2platform/webkit-repl.git
 cd webkit-repl
 npm install 
-'''
+```
 as per documented at https://github.com/rogerwang/node-webkit/wiki/Chromedriver you need to download the chrome driver for your platform 
 from http://dl.node-webkit.org/v0.11.2/ and copy it into the ```./node_modules/nodewebkit/nodewebkit``` folder.
 
@@ -20,6 +20,12 @@ coffee launch.coffee
 
 ... which should look like this:
 
+![](https://cloud.githubusercontent.com/assets/656739/5246747/2af2d01c-7964-11e4-8747-3bdac1bda247.png)
+
+and 
+
+![](https://cloud.githubusercontent.com/assets/656739/5246763/60e65c2a-7964-11e4-8104-eaaa880d0460.png)
+
 Note: in the current version, when you close the node-webkit window you will need to manually close the ```coffee launch.coffee``` process (since it is still running the
 selenium server in the background)
 
@@ -31,7 +37,11 @@ If you want to just open the webkit-repl without chromedriver support, just run
 
 ... which should look like this:
 
+![](https://cloud.githubusercontent.com/assets/656739/5246790/a68089ae-7964-11e4-9f0f-175cf9c3bc9c.png)
 
+and
+
+![](https://cloud.githubusercontent.com/assets/656739/5246824/e7fd8814-7964-11e4-8da4-8741b591885f.png)
 
 
 **more script examples**
