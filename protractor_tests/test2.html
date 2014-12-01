@@ -1,0 +1,16 @@
+<!-- Assuming HTML URL is
+ -- /test.html?wdurl=http://localhost:4444/wd/hub&wdsid=foo1234
+ -->
+<!DOCTYPE html>
+<script src="webdriver.js"></script>
+<input id="input" type="text"/>
+<script>
+ // Attaches to the server and session controlling this browser.
+ var driver = new webdriver.Builder().build();
+
+ var input = driver.findElement(webdriver.By.tagName('input'));
+ input.sendKeys('foo bar baz').then(function() {
+   assertEquals('foo bar baz',
+       document.getElementById('input').value);
+ });
+</script> ... test

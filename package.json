@@ -1,9 +1,36 @@
 {
-  "name": "my_Editor",
+  "name": "webkit-repl",
   "main": "index.html",
-   "window": {
+  "window": {
     "toolbar": true,
     "width": 660,
     "height": 500
-  }
+  },
+  "version": "0.0.1",
+  "dependencies": {
+    "async": "^0.9.0",
+    "chrome-remote-interface": "^0.5.0",
+    "coffee": "^0.0.1",
+    "fluentnode": "^0.2.0",
+    "nodewebkit": "^0.11.0",
+    "protractor": "^1.4.0",
+    "request": "^2.49.0",
+    "wd": "^0.3.11"
+  },
+  "devDependencies": {
+    "coffee-script": "^1.8.0"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/o2platform/webkit-repl.git"
+  },
+  "author": "Dinis Cruz <dinis.cruz@owasp.org> (http://blog.diniscruz.com/)",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/o2platform/webkit-repl/issues"
+  },
+  "homepage": "https://github.com/o2platform/webkit-repl"
 }
