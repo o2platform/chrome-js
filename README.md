@@ -45,10 +45,7 @@ and
 
 
 **more script examples**
-See these script examples to ideas on what to run there
-```
-https://gist.github.com/DinisCruz/516417b0e70a2ba5e8bb#file-91-multiple-google-searches-js
-```
+See these script examples to ideas on what to run there:  https://gist.github.com/DinisCruz/516417b0e70a2ba5e8bb#file-91-multiple-google-searches-js
 
 **related issues**
 [Is there a GUI REPL for node-webkit?](https://github.com/rogerwang/node-webkit/issues/2702)
