@@ -25,6 +25,9 @@ connect_To_Browser = (next)->
     else
       attach_To_Browser_Session(data.value.first().id,next)
 
+connect_To_Browser ->
+
+return 
 
 connect_To_Browser ->
   browser.get 'https://uno.teammentor.net/login' , ->
