@@ -45,3 +45,42 @@ setWebDriver(function() {
 })    
 
 nop = function() {} 
+
+_browser = function() 
+            {                
+                var chai = require("chai");
+                var chaiAsPromised = require("chai-as-promised");
+                chai.use(chaiAsPromised);
+                chai.should();
+                wd = require('wd');
+                wd.addAsyncMethod('get',
+                                  function(url) {
+
+                                    var cb = wd.findCallback(arguments);
+                                    console.log('here')
+                                    console.log(this)
+                                    this.eval('window.location.href="'+url+'"', cb);                                    
+                                  }
+                                );
+                
+                chaiAsPromised.transferPromiseness = wd.transferPromiseness;
+                var browser = wd.promiseChainRemote();
+                return browser.attach(sessionId)        
+            }()
+
+Function.prototype._get = function() { return '_get'}
+/*
+//not working as expected 
+Webdriver.prototype.get also doesn't work
+browser_Get = function(url) 
+{ 
+    return this.eval('window.location.href="'+url+'"')
+} */
+/*
+ 
+
+        .get(about_page)
+        .title(function(err, value) { show(value)} )
+        .eval("window.location.href")
+        .then(show)
+*/        

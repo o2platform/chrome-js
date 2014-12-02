@@ -51,24 +51,17 @@
   </style>
 </head>
 <body>
-    <button id='executeButton' class="button success tiny" href='execute'>EXECUTE JAVASCRIPT</button>    
+    <button id='executeButton' class="button success tiny" href='execute'>EXECUTE COFFEE SCRIPT</button>    
     <div id='response'>        
         <b>Return value:</b>
         <div id=executionResult>...</div>
     </div>
     <pre id="editor">
-text = "node-webkit"
-browser.eval("window.location.href='http://www.google.com'", function() {
-    browser.elementByName('q', function(err, element){
-        element.clear(function(){
-            element.sendKeys(text, nop)
-            browser.elementByName('btnG', function(err, button) {
-                button.click(text)
-            });
-        });
-    });
-});
-var value = 'The answer is ' + 42;
+text = "webkit-repl"
+_browser.get('https://www.google.com')
+        .elementByName('q').sendKeys(text)
+        .elementByName('btnG').click()     
+value = 'The answer is ' + 42;
 return value;
 
 </pre> 
@@ -78,7 +71,7 @@ return value;
         {          
           var langTools = ace.require("ace/ext/language_tools");
           var editor = ace.edit("editor");
-          editor.session.setMode("ace/mode/javascript");
+          editor.session.setMode("ace/mode/coffee");
           // enable autocompletion and snippets
           editor.setOptions({
             enableBasicAutocompletion: true,
