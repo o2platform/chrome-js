@@ -1,5 +1,5 @@
-url = require('url')
-
+url     = require('url')
+cheerio = require('cheerio')
 console.log('adding web driver support')
 
 find_SessionId = function(next) 
@@ -46,6 +46,21 @@ setWebDriver(function() {
 
 nop = function() {} 
 
+map_Extra_Methods = function(wd)
+{
+    wd.addAsyncMethod('get',function(url) {
+            var cb = wd.findCallback(arguments);           
+            this.eval('window.location.href="'+url+'"', cb);                                    
+        });
+    wd.addAsyncMethod('html',function(url) {
+            var cb = wd.findCallback(arguments);
+            this.eval('document.body.innerHTML')
+                .then(function(html){
+                        cb(cbheerio.load(html))
+                    });
+        });
+}
+
 _browser = function() 
             {                
                 var chai = require("chai");
@@ -53,29 +68,13 @@ _browser = function()
                 chai.use(chaiAsPromised);
                 chai.should();
                 wd = require('wd');
-                wd.addAsyncMethod('get',
-                                  function(url) {
-
-                                    var cb = wd.findCallback(arguments);
-                                    console.log('here')
-                                    console.log(this)
-                                    this.eval('window.location.href="'+url+'"', cb);                                    
-                                  }
-                                );
+                map_Extra_Methods(wd)
                 
                 chaiAsPromised.transferPromiseness = wd.transferPromiseness;
                 var browser = wd.promiseChainRemote();
                 return browser.attach(sessionId)        
             }()
 
-Function.prototype._get = function() { return '_get'}
-/*
-//not working as expected 
-Webdriver.prototype.get also doesn't work
-browser_Get = function(url) 
-{ 
-    return this.eval('window.location.href="'+url+'"')
-} */
 /*
  
 
