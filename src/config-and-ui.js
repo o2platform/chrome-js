@@ -33,5 +33,3 @@ var newWindow = function()
 }
 
 //setup
-
-reload_On_Changes()
