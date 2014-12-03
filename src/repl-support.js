@@ -1,22 +1,12 @@
 coffee = require('coffee-script')
+var util = require('util') 
+// menu support
 
 that = this
 if (!localStorage['index']) 
     localStorage['index'] = 0
-var gui  = require('nw.gui');
-var util = require('util') 
-win = gui.Window.get();
-var nativeMenuBar = new gui.Menu({ type: "menubar" });
-try {
-    nativeMenuBar.createMacBuiltin("My App", 
-        {
-          hideEdit: false,
-          hideWindow: true
-        });
-    win.menu = nativeMenuBar;
-    } catch (ex) {
-        console.log(ex.message);
-    }
+
+
 
 var show = function(value1, value2)
 {
@@ -41,19 +31,12 @@ var view = function(value1, value2)
     }
 }
 
-var newWindow = function()
-{
-    var gui  = require('nw.gui');
-    var new_win = gui.Window.get(window.open(document.location.href))
-}
 iframe2.onload = function()
  {       
     iframe = $($('.iframe2').contents())
     button = iframe.find('button')
     executionResult = iframe.find('#executionResult')
-    editor = win.eval(iframe2,'editor')
-    console.log(iframe.eval)
-    //editor = iframe.
+    editor = win.eval(iframe2,'editor')    
 
     button.on('click', function() {      
         executionResult.html('executing...')
@@ -84,8 +67,7 @@ iframe2.onload = function()
             executionResult.html('ERROR: ' + error)
         }        
     })
-    button.trigger('click')
-    console.log(' hook placed for: ' + button)
+    button.trigger('click')    
 
     process.on('uncaughtException', function(err) 
     {
