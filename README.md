@@ -1,4 +1,4 @@
-REPL to dynamicaly execute selenium webdriver scripts (from https://github.com/admc/wd) inside a chrome-based node-webkit window (from https://github.com/rogerwang/node-webkit)
+Multiple REPLs for [node-webkit](https://github.com/rogerwang/node-webkit)
 
 
 **how to run**
