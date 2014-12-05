@@ -1,4 +1,4 @@
-NodeWebKit_Service = require '../app/NodeWebKit-Service'
+NodeWebKit_Service = require './NodeWebKit-Service'
 
 describe.only 'test-NodeWebKit-Service |', ->
   xdescribe 'core',->

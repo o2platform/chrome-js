@@ -1,7 +1,7 @@
 return
 
 #NOT USED AT THE MOMENT
-App = require '../../app/app'
+App = require '.././app'
 
 describe 'test-App', ->
     app = new App()
@@ -21,7 +21,7 @@ describe 'test-App', ->
     it 'constructor',->
         App.assert_Is_Function()
         app.assert_Is_Object()
-        app.selenium_Service.assert_Instance_Of(require('../../app/Selenium-Service'))
+        app.selenium_Service.assert_Instance_Of(require('.././Selenium-Service'))
 
     it 'misc tests', (done)->
         app.selenium_Service.url_wd.GET (html)->

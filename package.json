@@ -33,7 +33,7 @@
   "author": "Dinis Cruz <dinis.cruz@owasp.org> (http://blog.diniscruz.com/)",
   "license": "Apache 2",
   "bugs": {
-    "url": "hhttps://github.com/o2platform/node-webkit-repl/issues"
+    "url": "https://github.com/o2platform/node-webkit-repl/issues"
   },
   "homepage": "https://github.com/o2platform/node-webkit-repl"
 }
