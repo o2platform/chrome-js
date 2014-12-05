@@ -1,6 +1,7 @@
 {
   "name": "webkit-repl",
   "main": "html/index.html",
+  "single-instance":false,
   "window": {
     "toolbar": true,
     "width": 660,
@@ -14,7 +15,7 @@
     "cheerio": "^0.18.0",
     "chrome-remote-interface": "^0.5.0",
     "coffee": "^0.0.1",
-    "fluentnode": "^0.2.0",
+    "fluentnode": "*",
     "nodewebkit": "^0.11.0",
     "protractor": "^1.4.0",
     "request": "^2.49.0",

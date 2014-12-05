@@ -1,15 +1,72 @@
 require 'fluentnode'
+
+#to add to fluentnode
+Number::invoke_After      = (callback)-> setTimeout callback, @
+String::wait_For_Http_GET = (callback)->
+  timeout = 500
+  delay   = 10;
+  try_Http_Get = (next)   =>
+    @.GET (data)        => if data is null then (delay).invoke_After next else callback(data)
+  run_Tests = (test_Count)=> if test_Count.empty() then @.GET (callback) else try_Http_Get ()->run_Tests(test_Count.splice(0,1))
+  run_Tests([0.. ~~(timeout/delay)])
+
 async    = require 'async'
-wd       = require('wd');
+nodewebkit      = require 'nodewebkit'
+Chrome          = require('chrome-remote-interface')
+
+
+class NodeWebKit_Service
+  constructor: ->
+    @first_Page      = '/Users/diniscruz/_Dev_Tests/node-webkit/my-first-test/html/index.html'
+    @url_First_Page  = "file://#{@first_Page}"
+    @process         = null
+    @port_Debug      = 9229
+    @chrome          = null
+    @url_Debug_Json  = "http://127.0.0.1:#{@port_Debug}/json"
+    @debug_Options   = null
+
+  path_Executable: ->
+    nodewebkit.findpath()
+
+  on_Exit: (callback)->
+    @process.on 'exit', ->
+      process.nextTick(callback)
+
+  start: (callback)=>
+    @process = @path_Executable().start_Process("--remote-debugging-port=#{@port_Debug}")
+    process.nextTick(callback)
+
+  stop: (callback)=>
+    @on_Exit callback
+    @process.kill()
+
+  connect_To_Chrome: (callback)->
+    options = { host: '127.0.0.1', port: @port_Debug}
+    @url_Debug_Json.wait_For_Http_GET (html)=>
+      @debug_Options = JSON.parse(html).first()
+      new Chrome options, (chrome)=>
+        @chrome = chrome
+        callback()
+
+
+        
+
+module.exports = NodeWebKit_Service
+
+
+return
+
+
 
 # the code below is more of a WebDriver_Service than an NodeWebKit_Service
-class NodeWebKit_Service
+
+wd       = require 'wd'
+class __NodeWebKit_Service
   constructor: (wd_port)->
     @wd_port       = wd_port || 4444
     @browser       = wd.remote({port: wd_port});
     @url_wd        = 'http://localhost:' + @wd_port
     @url_sessions  = @url_wd + '/wd/hub/sessions'
-    @first_Page     = 'file:///Users/diniscruz/_Dev_Tests/node-webkit/my-first-test/html/index.html'
     @session_Id     = null
     @capabilities   = null
 
