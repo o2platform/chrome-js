@@ -1,5 +1,5 @@
 {
-  "name": "webkit-repl",
+  "name": "ode-webkit-repl",
   "main": "html/index.html",
   "single-instance":false,
   "window": {
@@ -7,7 +7,7 @@
     "width": 660,
     "height": 500
   },
-  "version": "0.0.1",
+  "version": "0.1.0",
   "dependencies": {
     "async": "^0.9.0",
     "chai": "^1.10.0",
@@ -17,30 +17,23 @@
     "coffee": "^0.0.1",
     "fluentnode": "*",
     "nodewebkit": "^0.11.0",
-    "protractor": "^1.4.0",
     "request": "^2.49.0",
-    "selenium-standalone": "^2.44.0-1",
-    "selenium-webdriver": "^2.44.0",
-    "wd": "^0.3.11",
-    "webdriverio": "^2.3.0"
-  },
-  "devDependencies": {
     "coffee-script": "^1.8.0",
     "mocha": "^2.0.1"
   },
   "scripts": {
-    "start": "coffee app.coffee",
+    "start": "coffee app/app.coffee",
     "test": "node ./node_modules/mocha/bin/mocha --compilers coffee:coffee-script/register --recursive -R list tests",
     "dev-watch": "node ./node_modules/mocha/bin/mocha --compilers coffee:coffee-script/register --recursive -R list -w tests"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/o2platform/webkit-repl.git"
+    "url": "https://github.com/o2platform/node-webkit-repl.git"
   },
   "author": "Dinis Cruz <dinis.cruz@owasp.org> (http://blog.diniscruz.com/)",
-  "license": "ISC",
+  "license": "Apache 2",
   "bugs": {
-    "url": "https://github.com/o2platform/webkit-repl/issues"
+    "url": "hhttps://github.com/o2platform/node-webkit-repl/issues"
   },
-  "homepage": "https://github.com/o2platform/webkit-repl"
+  "homepage": "https://github.com/o2platform/node-webkit-repll"
 }

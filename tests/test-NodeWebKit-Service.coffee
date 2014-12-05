@@ -1,5 +1,4 @@
 NodeWebKit_Service = require '../app/NodeWebKit-Service'
-Selenium_Service   = require '../app/Selenium-Service'
 
 describe.only 'test-NodeWebKit-Service |', ->
   xdescribe 'core',->

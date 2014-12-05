@@ -17,7 +17,7 @@ Chrome          = require('chrome-remote-interface')
 
 class NodeWebKit_Service
   constructor: ->
-    @first_Page      = '/Users/diniscruz/_Dev_Tests/node-webkit/my-first-test/html/index.html'
+    @first_Page      = '.'
     @url_First_Page  = "file://#{@first_Page}"
     @process         = null
     @port_Debug      = 9229

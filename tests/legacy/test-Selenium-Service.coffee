@@ -1,4 +1,7 @@
-Selenium_Service = require '../app/Selenium-Service'
+return
+
+#### LEGACAY
+Selenium_Service = require '../../app/Selenium-Service'
 
 describe 'test-Selenium-Service', ->
   show_Logs = false
