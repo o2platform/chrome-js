@@ -1,48 +1,36 @@
 require 'fluentnode'
-require ('../extra_fluentnode')
 
-async    = require 'async'
-nodewebkit      = require 'nodewebkit'
-Chrome          = require('chrome-remote-interface')
-
+nodewebkit         = require 'nodewebkit'
+Remote_Chrome_Api  = require('../../src/api/Remote-Chrome-Api')
 
 class NodeWebKit_Service
   constructor: ->
     @path_App        = '/nw-apps/Simple-Invisible'.append_To_Process_Cwd_Path()
     @port_Debug      = 50000 + ~~(Math.random()*5000)         #use a random port between 50000 and 55000
-    @url_Json        = "http://127.0.0.1:#{@port_Debug}/json"
-    @chrome          = null
-    @json_Options    = null
     @process         = null
+    @chrome          = new Remote_Chrome_Api(@port_Debug)
 
   path_Executable: ->
     nodewebkit.findpath()
 
+  repl: (callback)=>
+    replServer = @.repl_Me ()=>
+    replServer.context.nwr = @
+    callback (replServer) if callback
+
   start: (callback)=>
     @process = @path_Executable().start_Process("--remote-debugging-port=#{@port_Debug}", @path_App)
-    process.nextTick(callback)
+    @chrome.connect(callback)
 
   stop: (callback)=>
     @process.on 'exit', ->
-      process.nextTick(callback)
+      callback()
     @process.kill()
 
-  connect_To_Chrome: (callback)->
-    options = { host: '127.0.0.1', port: @port_Debug}
-    @url_Json.http_GET_With_Timeout (html)=>
-      @json_Options = JSON.parse(html).first()
-      new Chrome options, (chrome)=>
-        @chrome = chrome
-        callback()
-
-  repl: (callback)=>
-    @start =>
-      @connect_To_Chrome =>
-        replServer = @.repl_Me ()=>
-        replServer.context.nwr = @
-        callback (replServer) if callback
-
-        
+  window_Show        : (callback)=> @chrome.eval_Script "require('nw.gui').Window.get().show()"         ,callback
+  window_Hide        : (callback)=> @chrome.eval_Script "require('nw.gui').Window.get().hide()"         ,callback
+  window_ShowDevTools: (callback)=> @chrome.eval_Script "require('nw.gui').Window.get().showDevTools()" ,callback
+  window_HideDevTools: (callback)=> @chrome.eval_Script "require('nw.gui').Window.get().closeDevTools()",callback
 
 module.exports = NodeWebKit_Service
 

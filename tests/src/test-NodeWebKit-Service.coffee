@@ -12,45 +12,45 @@ describe 'test-NodeWebKit-Service |', ->
     nodeWebKit.assert_Is_Object()
     (50000  < nodeWebKit.port_Debug < 55000).assert_Is_True()
     nodeWebKit.path_App.assert_Contains('/nw-apps/Simple-Invisible')
-    nodeWebKit.url_Json  .assert_Contains(nodeWebKit.port_Debug)
-    assert_Is_Null(nodeWebKit.chrome)
-    assert_Is_Null(nodeWebKit.json_Options)
+    nodeWebKit.chrome.assert_Instance_Of(require('../../src/api/Remote-Chrome-Api'))
+                     .port_Debug.assert_Is(nodeWebKit.port_Debug)
     assert_Is_Null(nodeWebKit.process)
 
   it 'path_Executable()', ()->
     nodeWebKit.path_Executable().assert_Contains('node-webkit.app/Contents/MacOS/node-webkit')
+
+  it 'repl', (done)->
+    nodeWebKit.repl (replServer)=>
+      replServer.context.nwr.assert_Instance_Of(NodeWebKit_Service)
+      replServer.on 'exit', =>
+        done()
+      replServer.commands['.exit'].action.apply(replServer)
 
   it 'start(), stop()', (done)->
     assert_Is_Null(nodeWebKit.process)
     nodeWebKit.start ->
       nodeWebKit.process.assert_Is_Object()
       nodeWebKit.process.pid.assert_Is_Number()
+      nodeWebKit.chrome._chrome.assert_Is_Object()
       nodeWebKit.stop(done)
 
-  it 'connect_To_Chrome',(done)->
-    @timeout(0)
-    nodeWebKit.start ->
-      nodeWebKit.connect_To_Chrome ->
-        nodeWebKit.chrome.assert_Is_Object()
-        options = nodeWebKit.json_Options.assert_Is_Object()
-        options.id                  .split('-').assert_Size_Is(5)
-        options.url                 .assert_Contains('/nw-apps/Simple-Invisible')
-        options.type                .assert_Is('page')
-        options.title               .assert_Is('')
-        options.description         .assert_Is('')
-        options.webSocketDebuggerUrl.assert_Is("ws://127.0.0.1:#{nodeWebKit.port_Debug}/devtools/page/#{options.id}")
-        options.devtoolsFrontendUrl .assert_Is("/devtools/devtools.html?ws=127.0.0.1:#{nodeWebKit.port_Debug}/devtools/page/#{options.id}")
-        nodeWebKit.stop ->
+  describe 'Need live window', ->
+    before (done)-> nodeWebKit.start -> done()
+    after  (done)-> nodeWebKit.stop -> done()
+
+    it 'window_Show', (done)->
+      @timeout(0)
+      nodeWebKit.window_Show ->
+        #todo: add way to check that window was opened
+        #nodeWebKit.window_ShowDevTools ->
+          nodeWebKit.window_Hide ->
            done()
 
-  it 'repl', (done)->
-    #@timeout(0)
-    nodeWebKit.repl (replServer)=>
-      replServer.context.nwr.assert_Instance_Of(NodeWebKit_Service)
-      replServer.on 'exit', =>
-        nodeWebKit.stop =>
-          done()
-      replServer.commands['.exit'].action.apply(replServer)
+    #note: as per https://github.com/rogerwang/node-webkit/issues/1282 if we call this from this test we will hang the current node-webkit thread (which is the one running tests)
+    #that is not a bad thing if we want to debug that code, but in this case it will also hang this test
+    #it 'window_ShowDevTools', (done)->
+    #  nodeWebKit.window_ShowDevTools ->
+    #    done()
 
 
   return

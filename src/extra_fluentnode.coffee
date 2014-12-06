@@ -1,4 +1,5 @@
 #to add to fluentnode
+Function::invoke_In           = (value   )-> setTimeout @, value
 Number::invoke_After          = (callback)-> setTimeout callback, @
 String::http_GET_With_Timeout = (callback)->
   timeout = 500
