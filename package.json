@@ -1,7 +1,7 @@
 {
   "name": "node-webkit-repl",
   "main": "html/index.html",
-  "single-instance":false,
+  "single-instance": false,
   "window": {
     "toolbar": true,
     "width": 660,
@@ -15,16 +15,17 @@
     "cheerio": "^0.18.0",
     "chrome-remote-interface": "^0.5.0",
     "coffee": "^0.0.1",
-    "fluentnode": "*",
-    "nodewebkit": "^0.11.0",
-    "request": "^2.49.0",
     "coffee-script": "^1.8.0",
-    "mocha": "^2.0.1"
+    "commander": "^2.5.0",
+    "fluentnode": "*",
+    "mocha": "^2.0.1",
+    "nodewebkit": "^0.11.0",
+    "request": "^2.49.0"
   },
   "scripts": {
-    "start": "coffee app/app.coffee",
-    "test": "node ./node_modules/mocha/bin/mocha --compilers coffee:coffee-script/register --recursive -R list tests",
-    "dev-watch": "node ./node_modules/mocha/bin/mocha --compilers coffee:coffee-script/register --recursive -R list -w tests"
+    "start": "./bin/node-webkit-repl gui",
+    "test": "node ./node_modules/mocha/bin/mocha --compilers=coffee:coffee-script/register --recursive -R list tests",
+    "dev-watch": "node ./node_modules/mocha/bin/mocha --compilers=coffee:coffee-script/register -w --recursive -R list tests bin"
   },
   "repository": {
     "type": "git",

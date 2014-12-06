@@ -1,0 +1,16 @@
+{
+  "main"           : "index.html",
+  "name"           : "simple-invisible",
+  "description"    : "simple node-webkit app (set to open in hidden/invisible)",
+  "version"        : "0.1.0",
+  "single-instance": false,
+  "window":
+    {
+      "title"  : "node-webkit - invisible window",
+      "toolbar": false,
+      "frame"  : false,
+      "show"   : true,
+      "width"  : 1000,
+      "height" : 800
+    }
+}

@@ -1,30 +1,60 @@
-NodeWebKit_Service = require './NodeWebKit-Service'
+NodeWebKit_Service = require './../../src/api/NodeWebKit-Service'
 
-describe.only 'test-NodeWebKit-Service |', ->
-  xdescribe 'core',->
-    nodeWebKit = null
+describe 'test-NodeWebKit-Service |', ->
 
-    before ->
-      nodeWebKit = new NodeWebKit_Service()
+  nodeWebKit = null
 
-    it 'constructor',->
-      NodeWebKit_Service.assert_Is_Function()
-      nodeWebKit.assert_Is_Object()
-      #nodeWebKit.browser.assert_Instance_Of(require('wd').NodeWebKit_Service)
-      nodeWebKit.first_Page    .assert_Contains('/html/index.html').assert_File_Exists();
-      nodeWebKit.url_First_Page.assert_Contains(nodeWebKit.first_Page)
+  before ->
+    nodeWebKit = new NodeWebKit_Service()
 
-    it 'path_Executable()', ()->
-      nodeWebKit.path_Executable().assert_Contains('node-webkit.app/Contents/MacOS/node-webkit')
+  it 'constructor',->
+    NodeWebKit_Service.assert_Is_Function()
+    nodeWebKit.assert_Is_Object()
+    (50000  < nodeWebKit.port_Debug < 55000).assert_Is_True()
+    nodeWebKit.path_App.assert_Contains('/nw-apps/Simple-Invisible')
+    nodeWebKit.url_Json  .assert_Contains(nodeWebKit.port_Debug)
+    assert_Is_Null(nodeWebKit.chrome)
+    assert_Is_Null(nodeWebKit.json_Options)
+    assert_Is_Null(nodeWebKit.process)
 
-    it 'start(), stop(), on_Exit()', (done)->
-      @timeout(0)
-      assert_Is_Null(nodeWebKit.process)
-      nodeWebKit.start ->
-        nodeWebKit.process.assert_Is_Object()
-        nodeWebKit.process.pid.assert_Is_Number()
-        nodeWebKit.stop(done)
-        #(1000).eval_After ()->nodeWebKit.stop(done)
+  it 'path_Executable()', ()->
+    nodeWebKit.path_Executable().assert_Contains('node-webkit.app/Contents/MacOS/node-webkit')
+
+  it 'start(), stop()', (done)->
+    assert_Is_Null(nodeWebKit.process)
+    nodeWebKit.start ->
+      nodeWebKit.process.assert_Is_Object()
+      nodeWebKit.process.pid.assert_Is_Number()
+      nodeWebKit.stop(done)
+
+  it 'connect_To_Chrome',(done)->
+    @timeout(0)
+    nodeWebKit.start ->
+      nodeWebKit.connect_To_Chrome ->
+        nodeWebKit.chrome.assert_Is_Object()
+        options = nodeWebKit.json_Options.assert_Is_Object()
+        options.id                  .split('-').assert_Size_Is(5)
+        options.url                 .assert_Contains('/nw-apps/Simple-Invisible')
+        options.type                .assert_Is('page')
+        options.title               .assert_Is('')
+        options.description         .assert_Is('')
+        options.webSocketDebuggerUrl.assert_Is("ws://127.0.0.1:#{nodeWebKit.port_Debug}/devtools/page/#{options.id}")
+        options.devtoolsFrontendUrl .assert_Is("/devtools/devtools.html?ws=127.0.0.1:#{nodeWebKit.port_Debug}/devtools/page/#{options.id}")
+        nodeWebKit.stop ->
+           done()
+
+  it 'repl', (done)->
+    #@timeout(0)
+    nodeWebKit.repl (replServer)=>
+      replServer.context.nwr.assert_Instance_Of(NodeWebKit_Service)
+      replServer.on 'exit', =>
+        nodeWebKit.stop =>
+          done()
+      replServer.commands['.exit'].action.apply(replServer)
+
+
+  return
+
 
   describe 'live tests', ->
     nodeWebKit = null
@@ -46,7 +76,7 @@ describe.only 'test-NodeWebKit-Service |', ->
 
     before (done)->
       nodeWebKit = new NodeWebKit_Service()
-      nodeWebKit.url_Debug_Json.GET (data)->
+      nodeWebKit.url_Json.GET (data)->
         if data is null
           create_Temp_Nw()
           remove_debug_port = "--remote-debugging-port=#{nodeWebKit.port_Debug}"
@@ -63,13 +93,13 @@ describe.only 'test-NodeWebKit-Service |', ->
       done()
 
     it 'connect_To_Chrome()', (done)->
-      nodeWebKit.url_Debug_Json.GET (data)->
+      nodeWebKit.url_Json.GET (data)->
         #assert_Is_Null(data)
         nodeWebKit.connect_To_Chrome ()->
           chrome = nodeWebKit.chrome.assert_Is_Object()
           done()
           return;
-          options = nodeWebKit.debug_Options.assert_Is_Object()
+          options = nodeWebKit.json_Options.assert_Is_Object()
           options.id                  .split('-').assert_Size_Is(5)
           #options.url                 .assert_Is('file://' + temp_NW)  #'nw:blank')
           options.type                .assert_Is('page')
@@ -77,7 +107,7 @@ describe.only 'test-NodeWebKit-Service |', ->
           options.description         .assert_Is('')
           #options.webSocketDebuggerUrl.assert_Is("ws://127.0.0.1:#{nodeWebKit.port_Debug}/devtools/page/#{options.id}")
           #options.devtoolsFrontendUrl .assert_Is("/devtools/devtools.html?ws=127.0.0.1:#{nodeWebKit.port_Debug}/devtools/page/#{options.id}")
-          nodeWebKit.url_Debug_Json.wait_For_Http_GET (html)->
+          nodeWebKit.url_Json.wait_For_Http_GET (html)->
             html.assert_Is_String()
             done()
 
@@ -199,7 +229,7 @@ describe 'test-NodeWebKit-Service', ->
 
     nodeWebKit.open_New_Browser_Session ->
       nodeWebKit.window_Url (url)->
-        url.contains(nodeWebKit.first_Page)
+        url.contains(nodeWebKit.path_App)
 
       #nodeWebKit.browser.window().on 'open', ->
       #'window was opened'.log

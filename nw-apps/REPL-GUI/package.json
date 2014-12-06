@@ -1,0 +1,10 @@
+{
+  "name": "node-webkit-repl",
+  "main": "index.html",
+  "single-instance":false,
+  "window": {
+    "toolbar": true,
+    "width": 660,
+    "height": 500
+  }
+}

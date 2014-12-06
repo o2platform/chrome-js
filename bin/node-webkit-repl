@@ -1,0 +1,27 @@
+#!/usr/bin/env node
+require('fluentnode')
+var program = require('commander');
+NodeWebKit_Service = require('../src/api/NodeWebKit-Service')
+program.version('0.0.1')
+
+program.command('repl')
+       .description('Start REPL')
+       .action(function(env, options)
+         {
+                process.on('uncaughtException', function(err) {
+                       console.log("Uncaught exception!", err);
+                });
+                new NodeWebKit_Service().repl()
+         })
+program.command('gui')
+       .description('Start Gui')
+       .action(function(env, options)
+         {
+                'nodewebkit'.start_Process_Redirect_Console('nw-apps/REPL-GUI')
+         })
+
+program.parse(process.argv)
+
+if (!program.args.length || program.args[0]==='') program.help();
+
+module.exports = program

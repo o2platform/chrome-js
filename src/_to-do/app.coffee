@@ -1,9 +1,9 @@
 require 'fluentnode'
 
-NodeWebKit_Service = require('./NodeWebKit-Service.coffee')
+NodeWebKit_Service = require('./../api/NodeWebKit-Service.coffee')
 
 nodeWebKit = new NodeWebKit_Service()
-nodeWebKit.path_Executable().start_Process(nodeWebKit.first_Page)
+nodeWebKit.path_Executable().start_Process(nodeWebKit.path_App)
 
 #Selenium_Service = require('./Selenium-Service')
 #
