@@ -89,39 +89,26 @@ describe 'test-Accessing-Node-WebKit |',->
             console.timeEnd('bbc')
             done()
 
-  xit 'bug: dummy request to give time to page to be loaded', (done)->
-    code = "document.body.innerHTML"
-    chrome.eval_Script code, (value, data)->
-      assert_Is_Null(value)
-      data.wasThrown.assert_Is_True()
-      data.exceptionDetails.text.assert_Is('Uncaught TypeError: Cannot read property \'innerHTML\' of null')
-      done()
+  it 'get document html via dom', (done)->
+    chrome.open 'app://abc/index.html', ->
+      code = "document.body.innerHTML"
+      chrome.eval_Script code,  (value, data)->
+        value.assert_Contains('<h3 id="name">Node-WebKit-REPL</h3>')
+        done();
 
-  xit 'get document html via dom', (done)->
-    code = "document.body.innerHTML"
-    chrome.eval_Script code,  (value, data)->
-      done();
+  it 'getProperties of the document.body object',(done)->
+    chrome.open 'app://abc/index.html', ->
+      chrome.eval_Script "document.body", (result, data)->
+        chrome._chrome.Runtime.getProperties {objectId: result, ownProperties:true}, (error, data)->
+          properties =  (item.name for item in data.result).sort()
+          properties.assert_Contains('outerHTML')
+          properties.assert_Contains('outerText')
+          done()
 
-  xit 'getProperties of the document.body object',(done)->
-    code = "document.body"
-    chrome.eval_Script code, (result, data)->
-      console.log(result)
-      console.log(data)
-      chrome._chrome.Runtime.getProperties {objectId: result, ownProperties:true}, (error, data)->
-        properties =  (item.name for item in data.result).sort()
-        properties.assert_Contains('outerHTML')
-        properties.assert_Contains('outerText')
-        done()
-
-  #it 'access nw-window',(done)->
-  #  #@timeout(100000)
-  #  chrome.eval_Script "require('nw.gui').Window.get().show()",  (result...)->
-  #    chrome.eval_Script 'document.body.innerHTML="<img src=a onerror=document.write(12) />"', (result...)->
-  #      #console.log(result)
-  #      chrome.eval_Script 'document.body.innerHTML',  (result...)->
-  #        #console.log result
-  #        500.invoke_After ()->
-  #          chrome.eval_Script 'document.body["innerHTML"]',  (result...)->
-  #          console.log result
-  #          #1200.invoke_After done
-  #          done()
+  it.only 'dynamically invoke javascript via innerHTML script injection',(done)->
+    chrome.open 'nw:about', ->
+      chrome.eval_Script 'document.body.innerHTML="<img src=a onerror=document.write(42) />"', ()->
+        chrome.html (value,$)->
+          value.assert_Is('<html><head></head><body>42</body></html>')
+          $('body').text().assert_Is(42)
+          done()
