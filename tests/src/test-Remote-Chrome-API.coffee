@@ -64,8 +64,13 @@ describe 'test-Remote_Chrome_API |',->
       done()
 
   it 'html', (done)->
-    chrome.open 'http://www.google.com', ->
-      1000.wait ->
-        chrome.html (html)->
-          html.assert_Contains('ry{if(!google.j.b){document.f&amp;&')
+    chrome.open 'app://abc/index.html', ->
+      200.wait ->
+        chrome.html (value,$)->
+          console.log(value)
+          value.contains('<html>')
+          $('body h3').text().assert_Is('Node-WebKit-REPL')
+          $('title'  ).text().assert_Is('Node-WebKit - Simple Invisible')
+          value.assert_Contains($('html').html())
+          value.assert_Is($.html())
           done()

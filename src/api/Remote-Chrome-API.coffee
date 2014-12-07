@@ -1,5 +1,6 @@
 require ('../extra_fluentnode')
-Chrome          = require('chrome-remote-interface')
+Chrome    = require('chrome-remote-interface')
+cheerio   = require('cheerio')
 
 class Remote_Chrome_API
   constructor: (port_Debug)->
@@ -41,7 +42,8 @@ class Remote_Chrome_API
     @_chrome.Page.navigate {url:url},  callback
 
   html: (callback)=>
-    @eval_Script 'document.body.outerHTML', callback
+    @eval_Script 'document.documentElement.outerHTML', (value)->
+      callback(value, cheerio.load(value))
 
 module.exports = Remote_Chrome_API
 

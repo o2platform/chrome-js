@@ -22,7 +22,7 @@ describe 'test-Accessing-Node-WebKit |',->
       data.result.description.assert_Is('Window')
       done();
 
-  it 'current Window position', (done)->
+  it 'current Window position (vs package.json)', (done)->
     code = "var _window = require('nw.gui').Window.get();
             var value = {
                             x    : _window.x ,
@@ -37,9 +37,44 @@ describe 'test-Accessing-Node-WebKit |',->
       value.height.assert_Is(package_Json.window.height)
       value.x.assert_Bigger_Than(0)
       value.y.assert_Bigger_Than(0)
-      console.log value
       done()
 
+  it 'load nw:about', (done)->
+    chrome.open 'nw:about', ->
+      100.wait ->
+        chrome.html (value,$)->
+          console.log(value)
+          $('title').text().assert_Is('node-webkit')
+          node_Text =  "    .__   __.   ______    _______   _______         \n"    +
+                       "    |  \\ |  |  /  __  \\  |       \\ |   ____|        \n" +
+                       "    |   \\|  | |  |  |  | |  .--.  ||  |__    ______ \n"   +
+                       "    |  . `  | |  |  |  | |  |  |  ||   __|  |______|\n"    +
+                       "    |  |\\   | |  `--'  | |  '--'  ||  |____         \n"   +
+                       "    |__| \\__|  \\______/  |_______/ |_______|"
+
+          value.assert_Contains(node_Text)
+          done()
+
+  it 'load nw:version', (done)->
+    chrome.open 'nw:version', ->
+      40.wait ->
+        chrome.html (value,$)->
+          $('title').text().assert_Is('node-webkit versions')
+          $('body').text().assert_Contains('node-webkit')
+                          .assert_Contains('node.js')
+                          .assert_Contains('Chromium')
+                          .assert_Contains('commit hash')
+          console.log($('body').text())
+          done()
+
+  return
+  it 'load page and get event', (done)->
+    chrome.open 'nw:asd', ->
+      300.wait ->
+        chrome.html (value)->
+          #value.assert_Is('')
+          console.log value
+          done()
 
   xit 'bug: dummy request to give time to page to be loaded', (done)->
     code = "document.body.innerHTML"
