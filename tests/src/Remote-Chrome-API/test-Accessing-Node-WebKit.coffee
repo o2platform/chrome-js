@@ -67,14 +67,27 @@ describe 'test-Accessing-Node-WebKit |',->
           console.log($('body').text())
           done()
 
-  return
   it 'load page and get event', (done)->
-    chrome.open 'nw:asd', ->
-      300.wait ->
-        chrome.html (value)->
-          #value.assert_Is('')
-          console.log value
-          done()
+    console.time('req')
+    url = 'app://abc/index.html'
+    chrome.open url, ()->
+      chrome.html (value,$)->
+        $('title').html().assert_Is('Node-WebKit - Simple Invisible')
+        console.timeEnd('req')
+        done()
+
+  it 'open google and bcc', (done)->
+    console.time('google')
+    chrome.open "https://www.google.co.uk", ->
+      chrome.html (value,$)->
+        $('title').html().assert_Is('Google')
+        console.timeEnd('google')
+        console.time('bbc')
+        chrome.open "http://www.bbc.co.uk/news", ->
+          chrome.html (value,$)->
+            $('head').attr('resource').assert_Is('http://www.bbc.co.uk/news/')
+            console.timeEnd('bbc')
+            done()
 
   xit 'bug: dummy request to give time to page to be loaded', (done)->
     code = "document.body.innerHTML"

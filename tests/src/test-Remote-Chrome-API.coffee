@@ -37,7 +37,7 @@ describe 'test-Remote_Chrome_API |',->
     chrome.runtime_Evaluate '40+2', false, (data)->
       data.assert_Is(42)
       chrome.runtime_Evaluate 'var answer = {value: 42 }; answer', false, (data)->
-        data.assert_Is('{"injectedScriptId":1,"id":1}')
+        data.assert_Contains('{"injectedScriptId')
         chrome.runtime_Evaluate 'answer', true, (data)->
           data.assert_Is({ value: 42 })
           data.value.assert_Is(42)
@@ -56,18 +56,18 @@ describe 'test-Remote_Chrome_API |',->
             .href.assert_Contains(nodeWebKit.path_App)
         done()
 
-  it 'open', (done)->
-    chrome.open 'nw:version' , (error, data)=>
-      error.assert_Is_False()
-      data.assert_Is_Object()
-          .frameId.assert_Is_String()
-      done()
+  it 'open()', (done)->
+    chrome.open 'nw:version' , ()=>
+      chrome.page_Events._events.keys().assert_Size_Is(1)
+      process.nextTick ->
+        chrome.page_Events._events.keys().assert_Size_Is(0)
+        done()
 
   it 'html', (done)->
     chrome.open 'app://abc/index.html', ->
       200.wait ->
         chrome.html (value,$)->
-          console.log(value)
+          #console.log(value)
           value.contains('<html>')
           $('body h3').text().assert_Is('Node-WebKit-REPL')
           $('title'  ).text().assert_Is('Node-WebKit - Simple Invisible')
