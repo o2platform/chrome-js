@@ -13,16 +13,19 @@ describe 'test-Accessing-Node-WebKit',->
     nodeWebKit.stop ->
       done()
 
+  @timeout(5000)
+
   it 'confirm access to require(nw-gui) and Window.get() ', (done)->
     code = "require('nw.gui').Window.get()"
     chrome.eval_Script code,  (value, data)->
+      console.log value
       value                  .assert_Is('{"injectedScriptId":1,"id":1}')
       data.result.type       .assert_Is('object')
       data.result.className  .assert_Is('Window')
       data.result.description.assert_Is('Window')
       done();
 
-  it 'bug: dummy request to give time to page to be loaded', (done)->
+  xit 'bug: dummy request to give time to page to be loaded', (done)->
     code = "document.body.innerHTML"
     chrome.eval_Script code, (value, data)->
       assert_Is_Null(value)
@@ -30,14 +33,16 @@ describe 'test-Accessing-Node-WebKit',->
       data.exceptionDetails.text.assert_Is('Uncaught TypeError: Cannot read property \'innerHTML\' of null')
       done()
 
-  it 'get document html via dom', (done)->
+  xit 'get document html via dom', (done)->
     code = "document.body.innerHTML"
     chrome.eval_Script code,  (value, data)->
       done();
 
-  it 'getProperties of the document.body object',(done)->
+  xit 'getProperties of the document.body object',(done)->
     code = "document.body"
     chrome.eval_Script code, (result, data)->
+      console.log(result)
+      console.log(data)
       chrome._chrome.Runtime.getProperties {objectId: result, ownProperties:true}, (error, data)->
         properties =  (item.name for item in data.result).sort()
         properties.assert_Contains('outerHTML')

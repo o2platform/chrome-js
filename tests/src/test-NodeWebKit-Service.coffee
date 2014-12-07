@@ -17,7 +17,10 @@ describe 'test-NodeWebKit-Service |', ->
     assert_Is_Null(nodeWebKit.process)
 
   it 'path_Executable()', ()->
-    nodeWebKit.path_Executable().assert_Contains('node-webkit.app/Contents/MacOS/node-webkit')
+    if (require('os').platform() is 'darwin')
+      nodeWebKit.path_Executable().assert_Contains('node-webkit.app/Contents/MacOS/node-webkit')
+    else
+      nodeWebKit.path_Executable().assert_Contains('nw')
 
   it 'repl', (done)->
     nodeWebKit.repl (replServer)=>
