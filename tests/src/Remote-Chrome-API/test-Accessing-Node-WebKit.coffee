@@ -105,7 +105,7 @@ describe 'test-Accessing-Node-WebKit |',->
           properties.assert_Contains('outerText')
           done()
 
-  it.only 'dynamically invoke javascript via innerHTML script injection',(done)->
+  it 'dynamically invoke javascript via innerHTML script injection',(done)->
     chrome.open 'nw:about', ->
       chrome.eval_Script 'document.body.innerHTML="<img src=a onerror=document.write(42) />"', ()->
         chrome.html (value,$)->
