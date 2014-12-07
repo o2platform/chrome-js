@@ -32,6 +32,9 @@ class NodeWebKit_Service
   window_ShowDevTools: (callback)=> @chrome.eval_Script "require('nw.gui').Window.get().showDevTools()" ,callback
   window_HideDevTools: (callback)=> @chrome.eval_Script "require('nw.gui').Window.get().closeDevTools()",callback
 
+  show: ()=> @window_Show()
+  hide: ()=> @window_Hide()
+
 module.exports = NodeWebKit_Service
 
 

@@ -37,6 +37,10 @@ describe 'test-NodeWebKit-Service |', ->
       nodeWebKit.chrome._chrome.assert_Is_Object()
       nodeWebKit.stop(done)
 
+  it 'extra method mappings',->
+    nodeWebKit.show.assert_Is_Function()
+    nodeWebKit.hide.assert_Is_Function()
+
   describe 'Need live window', ->
     before (done)-> nodeWebKit.start -> done()
     after  (done)-> nodeWebKit.stop -> done()

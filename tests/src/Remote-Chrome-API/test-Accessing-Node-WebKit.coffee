@@ -22,7 +22,7 @@ describe 'test-Accessing-Node-WebKit |',->
       data.result.description.assert_Is('Window')
       done();
 
-  it 'bug: dummy request to give time to page to be loaded', (done)->
+  xit 'bug: dummy request to give time to page to be loaded', (done)->
     code = "document.body.innerHTML"
     chrome.eval_Script code, (value, data)->
       assert_Is_Null(value)
