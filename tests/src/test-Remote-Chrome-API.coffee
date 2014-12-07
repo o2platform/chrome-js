@@ -63,14 +63,36 @@ describe 'test-Remote_Chrome_API |',->
         chrome.page_Events._events.keys().assert_Size_Is(0)
         done()
 
-  it 'html', (done)->
+  it 'html()', (done)->
     chrome.open 'app://abc/index.html', ->
-      200.wait ->
-        chrome.html (value,$)->
-          #console.log(value)
-          value.contains('<html>')
-          $('body h3').text().assert_Is('Node-WebKit-REPL')
-          $('title'  ).text().assert_Is('Node-WebKit - Simple Invisible')
-          value.assert_Contains($('html').html())
-          value.assert_Is($.html())
-          done()
+      chrome.html (value,$)->
+        #console.log(value)
+        value.contains('<html>')
+        $('body h3').text().assert_Is('Node-WebKit-REPL')
+        $('title'  ).text().assert_Is('Node-WebKit-REPL | Simple Invisible')
+        value.assert_Contains($('html').html())
+        value.assert_Is($.html())
+        done()
+
+  it 'dom_Document()',(done)->
+    page ='app://abc/index.html'
+    chrome.open page, ->
+      chrome.dom_Document (document)->
+        root = document.assert_Is_Object().root
+                       .assert_Is_Object()
+        root.nodeId.assert_Is_Number()
+        root.nodeType.assert_Is(9)
+        root.documentURL.assert_Is(page)
+        root.baseURL.assert_Is(page)
+        root.childNodeCount.assert_Is(2)
+        root.children[0].nodeName.assert_Is('html')
+        root.children[0].nodeType.assert_Is(10)
+        root.children[1].nodeName.assert_Is('HTML')
+        root.children[1].nodeType.assert_Is(1)
+        root.children[1].childNodeCount.assert_Is(2)
+        root.children[1].children[0].nodeName.assert_Is('HEAD')
+        root.children[1].children[0].nodeType.assert_Is(1)
+        root.children[1].children[1].nodeName.assert_Is('BODY')
+        root.children[1].children[1].nodeType.assert_Is(1)
+        root.children[1].children[0].attributes.assert_Is(['lang','en'])
+        done()

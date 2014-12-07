@@ -12,8 +12,10 @@ describe 'test-NodeWebKit-Service |', ->
     nodeWebKit.assert_Is_Object()
     (50000  < nodeWebKit.port_Debug < 55000).assert_Is_True()
     nodeWebKit.path_App.assert_Contains('/nw-apps/Simple-Invisible')
+    nodeWebKit.page_Index.assert_Is('App://nwr/index.html')
     nodeWebKit.chrome.assert_Instance_Of(require('../../src/api/Remote-Chrome-API'))
                      .port_Debug.assert_Is(nodeWebKit.port_Debug)
+
     assert_Is_Null(nodeWebKit.process)
 
   it 'path_Executable()', ()->
@@ -53,11 +55,28 @@ describe 'test-NodeWebKit-Service |', ->
           nodeWebKit.window_Hide ->
            done()
 
+    it 'open()', (done)->
+      nodeWebKit.open 'nw:about', ->
+        nodeWebKit.chrome.html (value,$)->
+          $('title').html().assert_Is('node-webkit')
+          done();
+
+    it 'open_Index()', (done)->
+      nodeWebKit.open_Index ->
+        nodeWebKit.chrome.html (value,$)->
+          $('title').html().assert_Is('Node-WebKit-REPL | Simple Invisible')
+          done();
+
+
     #note: as per https://github.com/rogerwang/node-webkit/issues/1282 if we call this from this test we will hang the current node-webkit thread (which is the one running tests)
     #that is not a bad thing if we want to debug that code, but in this case it will also hang this test
     #it 'window_ShowDevTools', (done)->
     #  nodeWebKit.window_ShowDevTools ->
     #    done()
+
+
+
+
 
 
   return
@@ -118,12 +137,11 @@ describe 'test-NodeWebKit-Service |', ->
             html.assert_Is_String()
             done()
 
-    it 'monitor requests', (done)->
+    xit 'monitor requests', (done)->
       chrome.Network.enable (err, data)->
         console.log(err,data)
         chrome.Network.requestWillBeSent(console.log)
         chrome.Page.navigate {url: 'http://www.google.com'}, (err, data)->
-          console.log err,data
           done()
 
 

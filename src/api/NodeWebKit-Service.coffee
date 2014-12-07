@@ -6,6 +6,7 @@ Remote_Chrome_API  = require('../../src/api/Remote-Chrome-API')
 class NodeWebKit_Service
   constructor: ->
     @path_App        = '/nw-apps/Simple-Invisible'.append_To_Process_Cwd_Path()
+    @page_Index      = 'App://nwr/index.html'
     @port_Debug      = 50000 + ~~(Math.random()*5000)         #use a random port between 50000 and 55000
     @process         = null
     @chrome          = new Remote_Chrome_API(@port_Debug)
@@ -36,6 +37,12 @@ class NodeWebKit_Service
 
   show: ()=> @window_Show()
   hide: ()=> @window_Hide()
+
+  open: (url, callback)=>
+    @chrome.open url, callback
+
+  open_Index: (callback)=>
+    @chrome.open @page_Index, callback
 
 module.exports = NodeWebKit_Service
 

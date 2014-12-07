@@ -52,7 +52,7 @@ class Remote_Chrome_API
 
   open: (url,callback)=>
     @_chrome.Page.navigate {url:url},  (error, data)=>
-      if not error
+      if not error and callback
         eventKey = data.frameId
         @page_Events.on eventKey, callback
 
@@ -60,6 +60,13 @@ class Remote_Chrome_API
     @eval_Script 'document.documentElement.outerHTML', (value)->
       $ = if (value) then cheerio.load(value) else null
       callback(value, $)
+
+  page_Index: (callback)->
+    open 'App://nwr/index.html', callback
+
+  dom_Document: (callback)=>
+    @_chrome.DOM.getDocument (err, data)->
+      callback(data)
 
 module.exports = Remote_Chrome_API
 

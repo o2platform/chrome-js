@@ -41,63 +41,44 @@ describe 'test-Accessing-Node-WebKit |',->
 
   it 'load nw:about', (done)->
     chrome.open 'nw:about', ->
-      100.wait ->
-        chrome.html (value,$)->
-          console.log(value)
-          $('title').text().assert_Is('node-webkit')
-          node_Text =  "    .__   __.   ______    _______   _______         \n"    +
-                       "    |  \\ |  |  /  __  \\  |       \\ |   ____|        \n" +
-                       "    |   \\|  | |  |  |  | |  .--.  ||  |__    ______ \n"   +
-                       "    |  . `  | |  |  |  | |  |  |  ||   __|  |______|\n"    +
-                       "    |  |\\   | |  `--'  | |  '--'  ||  |____         \n"   +
-                       "    |__| \\__|  \\______/  |_______/ |_______|"
+      chrome.html (value,$)->
+        $('title').text().assert_Is('node-webkit')
+        node_Text =  "    .__   __.   ______    _______   _______         \n"    +
+                     "    |  \\ |  |  /  __  \\  |       \\ |   ____|        \n" +
+                     "    |   \\|  | |  |  |  | |  .--.  ||  |__    ______ \n"   +
+                     "    |  . `  | |  |  |  | |  |  |  ||   __|  |______|\n"    +
+                     "    |  |\\   | |  `--'  | |  '--'  ||  |____         \n"   +
+                     "    |__| \\__|  \\______/  |_______/ |_______|"
 
-          value.assert_Contains(node_Text)
-          done()
+        value.assert_Contains(node_Text)
+        done()
 
   it 'load nw:version', (done)->
     chrome.open 'nw:version', ->
-      40.wait ->
-        chrome.html (value,$)->
-          $('title').text().assert_Is('node-webkit versions')
-          $('body').text().assert_Contains('node-webkit')
-                          .assert_Contains('node.js')
-                          .assert_Contains('Chromium')
-                          .assert_Contains('commit hash')
-          console.log($('body').text())
-          done()
+      chrome.html (value,$)->
+        $('title').text().assert_Is('node-webkit versions')
+        $('body').text().assert_Contains('node-webkit')
+                        .assert_Contains('node.js')
+                        .assert_Contains('Chromium')
+                        .assert_Contains('commit hash')
+        done()
 
   it 'load page and get event', (done)->
-    console.time('req')
     url = 'app://abc/index.html'
     chrome.open url, ()->
       chrome.html (value,$)->
-        $('title').html().assert_Is('Node-WebKit - Simple Invisible')
-        console.timeEnd('req')
+        $('title').html().assert_Is('Node-WebKit-REPL | Simple Invisible')
         done()
 
-  it 'open google and bcc', (done)->
-    console.time('google')
-    chrome.open "https://www.google.co.uk", ->
-      chrome.html (value,$)->
-        $('title').html().assert_Is('Google')
-        console.timeEnd('google')
-        console.time('bbc')
-        chrome.open "http://www.bbc.co.uk/news", ->
-          chrome.html (value,$)->
-            $('head').attr('resource').assert_Is('http://www.bbc.co.uk/news/')
-            console.timeEnd('bbc')
-            done()
-
   it 'get document html via dom', (done)->
-    chrome.open 'app://abc/index.html', ->
+    chrome.open 'app://nwr/index.html', ->
       code = "document.body.innerHTML"
       chrome.eval_Script code,  (value, data)->
         value.assert_Contains('<h3 id="name">Node-WebKit-REPL</h3>')
         done();
 
   it 'getProperties of the document.body object',(done)->
-    chrome.open 'app://abc/index.html', ->
+    chrome.open 'app://nwr/index.html', ->
       chrome.eval_Script "document.body", (result, data)->
         chrome._chrome.Runtime.getProperties {objectId: result, ownProperties:true}, (error, data)->
           properties =  (item.name for item in data.result).sort()
@@ -112,3 +93,23 @@ describe 'test-Accessing-Node-WebKit |',->
           value.assert_Is('<html><head></head><body>42</body></html>')
           $('body').text().assert_Is(42)
           done()
+
+  it 'using querySelector', (done)->
+    nodeWebKit.open_Index ->
+      chrome.html (value,$)->
+        $('title').html().assert_Is('Node-WebKit-REPL | Simple Invisible')
+        done();
+
+  # not working since getOuterHTML and getAttributes are not finding the object
+  xit 'use querySelector to find elements on page',(done)->
+    @timeout(0)
+    chrome.open 'app://nwr/index.html',->
+        chrome.eval_Script "document.querySelector('p')", (value,data)->
+          #console.log data
+          nodeId = value.from_Json().id
+          console.log nodeId
+          #chrome._chrome.DOM.getOuterHTML {nodeId: nodeId}, (err, data)->
+          chrome._chrome.DOM.getAttributes {nodeId: nodeId}, (err, data)->
+            console.log err
+            console.log data
+            done()
