@@ -94,11 +94,15 @@ describe 'test-Accessing-Node-WebKit |',->
           $('body').text().assert_Is(42)
           done()
 
-  it 'using querySelector', (done)->
+  xit 'using querySelector', (done)->
     nodeWebKit.open_Index ->
-      chrome.html (value,$)->
-        $('title').html().assert_Is('Node-WebKit-REPL | Simple Invisible')
-        done();
+      chrome.dom_Document (root)->
+        selector = 'p'
+        nodeId   = root.nodeId
+        chrome._chrome.DOM.querySelectorAll {nodeId:nodeId, selector:selector}, (err, data)->
+          console.log err
+          console.log data
+          done();
 
   # not working since getOuterHTML and getAttributes are not finding the object
   xit 'use querySelector to find elements on page',(done)->

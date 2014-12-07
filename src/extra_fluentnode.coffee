@@ -8,6 +8,7 @@ Number::assert_Bigger_Than    = (value   )-> (@ > value).assert_Is_True()
 Number::assert_Smaller_Than   = (value   )-> (@ < value).assert_Is_True()
 String::as_Json               = (        )->JSON.parse(@)
 String::from_Json             = (        )->JSON.parse(@)
+String::remove                = (value   )->@.replace(value,'')
 
 String::http_GET_With_Timeout = (callback)->
   timeout = 500

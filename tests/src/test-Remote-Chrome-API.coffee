@@ -78,8 +78,7 @@ describe 'test-Remote_Chrome_API |',->
     page ='app://abc/index.html'
     chrome.open page, ->
       chrome.dom_Document (document)->
-        root = document.assert_Is_Object().root
-                       .assert_Is_Object()
+        root = document.assert_Is_Object()
         root.nodeId.assert_Is_Number()
         root.nodeType.assert_Is(9)
         root.documentURL.assert_Is(page)
@@ -96,3 +95,27 @@ describe 'test-Remote_Chrome_API |',->
         root.children[1].children[1].nodeType.assert_Is(1)
         root.children[1].children[0].attributes.assert_Is(['lang','en'])
         done()
+
+  it 'dom_Html()', (done)->
+    nodeWebKit.open_Index ->
+      chrome.html (html_Direct)->
+        chrome.dom_Document (document)->
+          chrome.dom_Html document.nodeId, (html_Dom)->
+            html_Direct.assert_Is(html_Dom.html.remove('<!DOCTYPE html>'))
+            done()
+
+  it 'dom_Find()', (done)->
+    nodeWebKit.open_Index ->
+      chrome.dom_Find 'body', (data)->
+        data.html.assert_Is(data.$.html())
+        data.$('h3').text().assert_Is('Node-WebKit-REPL')
+        done()
+
+  it 'dom_Find_All()', (done)->
+    nodeWebKit.open_Index ->
+      chrome.dom_Find_All 'p', (data)->
+        data.assert_Size_Is(2)
+        first_P = data[0]
+        first_P.html.assert_Contains('This is the and index page')
+        first_P.html.assert_Is(first_P.$.html())
+        done();
