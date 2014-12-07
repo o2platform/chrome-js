@@ -1,7 +1,7 @@
 Remote_Chrome_API  = require('../../src/api/Remote-Chrome-API')
 NodeWebKit_Service = require('../../src/api/NodeWebKit-Service')
 
-describe 'test-Remote_Chrome_API',->
+describe 'test-Remote_Chrome_API |',->
   nodeWebKit = new NodeWebKit_Service()
   chrome     = null
 

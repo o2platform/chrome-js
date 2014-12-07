@@ -1,6 +1,6 @@
 program = require('../../bin/node-webkit-repl')
 
-describe 'bin | node-web-kit-repl ', ->
+describe 'bin | node-web-kit-repl |', ->
 
   it 'options',->
     program.assert_Is_Object().assert_Instance_Of(require('commander').Command)

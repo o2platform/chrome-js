@@ -1,4 +1,4 @@
-Node-WebKit-REPL[![Build Status](https://travis-ci.org/o2platform/node-webkit-repl.svg?branch=master)](https://travis-ci.org/o2platform/fluentnode)
+Node-WebKit-REPL[![Build Status](https://travis-ci.org/o2platform/node-webkit-repl.svg?branch=master)](https://travis-ci.org/o2platform/node-webkit-repl)
 ==========
 
 [![NPM](https://nodei.co/npm/node-webkit-repl.png)](https://nodei.co/npm/fluentnode/)

@@ -7,10 +7,10 @@
   "window":
     {
       "title"  : "node-webkit - invisible window",
-      "toolbar": true,
-      "frame"  : true,
+      "toolbar": false,
+      "frame"  : false,
       "show"   : false,
-      "width"  : 1000,
-      "height" : 600
+      "width"  : 0,
+      "height" : 0
     }
 }

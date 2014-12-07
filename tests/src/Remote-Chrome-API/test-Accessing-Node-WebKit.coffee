@@ -1,6 +1,6 @@
 NodeWebKit_Service = require('../../../src/api/NodeWebKit-Service')
 
-describe 'test-Accessing-Node-WebKit',->
+describe 'test-Accessing-Node-WebKit |',->
   nodeWebKit = new NodeWebKit_Service()
   chrome     = null
 
@@ -13,19 +13,16 @@ describe 'test-Accessing-Node-WebKit',->
     nodeWebKit.stop ->
       done()
 
-  @timeout(5000)
-
   it 'confirm access to require(nw-gui) and Window.get() ', (done)->
     code = "require('nw.gui').Window.get()"
     chrome.eval_Script code,  (value, data)->
-      console.log value
       value                  .assert_Is('{"injectedScriptId":1,"id":1}')
       data.result.type       .assert_Is('object')
       data.result.className  .assert_Is('Window')
       data.result.description.assert_Is('Window')
       done();
 
-  xit 'bug: dummy request to give time to page to be loaded', (done)->
+  it 'bug: dummy request to give time to page to be loaded', (done)->
     code = "document.body.innerHTML"
     chrome.eval_Script code, (value, data)->
       assert_Is_Null(value)
