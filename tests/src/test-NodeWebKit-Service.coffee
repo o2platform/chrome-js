@@ -12,7 +12,7 @@ describe 'test-NodeWebKit-Service |', ->
     nodeWebKit.assert_Is_Object()
     (50000  < nodeWebKit.port_Debug < 55000).assert_Is_True()
     nodeWebKit.path_App.assert_Contains('/nw-apps/Simple-Invisible')
-    nodeWebKit.chrome.assert_Instance_Of(require('../../src/api/Remote-Chrome-Api'))
+    nodeWebKit.chrome.assert_Instance_Of(require('../../src/api/Remote-Chrome-API'))
                      .port_Debug.assert_Is(nodeWebKit.port_Debug)
     assert_Is_Null(nodeWebKit.process)
 

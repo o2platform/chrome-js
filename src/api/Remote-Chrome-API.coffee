@@ -1,7 +1,7 @@
 require ('../extra_fluentnode')
 Chrome          = require('chrome-remote-interface')
 
-class Remote_Chrome_Api
+class Remote_Chrome_API
   constructor: (port_Debug)->
     @port_Debug   = port_Debug || 9222
     @url_Json     = "http://127.0.0.1:#{@port_Debug}/json"
@@ -34,5 +34,5 @@ class Remote_Chrome_Api
     @runtime_Evaluate value, true, callback
 
 
-module.exports = Remote_Chrome_Api
+module.exports = Remote_Chrome_API
 

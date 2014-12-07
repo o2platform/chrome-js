@@ -1,14 +1,14 @@
 require 'fluentnode'
 
 nodewebkit         = require 'nodewebkit'
-Remote_Chrome_Api  = require('../../src/api/Remote-Chrome-Api')
+Remote_Chrome_API  = require('../../src/api/Remote-Chrome-API')
 
 class NodeWebKit_Service
   constructor: ->
     @path_App        = '/nw-apps/Simple-Invisible'.append_To_Process_Cwd_Path()
     @port_Debug      = 50000 + ~~(Math.random()*5000)         #use a random port between 50000 and 55000
     @process         = null
-    @chrome          = new Remote_Chrome_Api(@port_Debug)
+    @chrome          = new Remote_Chrome_API(@port_Debug)
 
   path_Executable: ->
     nodewebkit.findpath()

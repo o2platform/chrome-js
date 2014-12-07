@@ -1,7 +1,7 @@
-Remote_Chrome_Api  = require('../../src/api/Remote-Chrome-Api')
+Remote_Chrome_API  = require('../../src/api/Remote-Chrome-API')
 NodeWebKit_Service = require('../../src/api/NodeWebKit-Service')
 
-describe 'test-Remote_Chrome_Api',->
+describe 'test-Remote_Chrome_API',->
   nodeWebKit = new NodeWebKit_Service()
   chrome     = null
 
@@ -15,8 +15,8 @@ describe 'test-Remote_Chrome_Api',->
       done()
 
   it 'constructor',->
-    Remote_Chrome_Api.assert_Is_Function()
-    chrome.assert_Is_Object().assert_Instance_Of(Remote_Chrome_Api)
+    Remote_Chrome_API.assert_Is_Function()
+    chrome.assert_Is_Object().assert_Instance_Of(Remote_Chrome_API)
     #assert_Is_Null(chrome.json_Options)
     #assert_Is_Null(chrome._chrome)
 
