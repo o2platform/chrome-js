@@ -1,10 +1,16 @@
-Multiple REPLs for [node-webkit](https://github.com/rogerwang/node-webkit)
+Node-WebKit-REPL[![Build Status](https://travis-ci.org/o2platform/node-webkit-repl.svg?branch=master)](https://travis-ci.org/o2platform/fluentnode)
+==========
 
+[![NPM](https://nodei.co/npm/node-webkit-repl.png)](https://nodei.co/npm/fluentnode/)
 
-**how to run**
+[![NPM](https://nodei.co/npm-dl/node-webkit-repl.png)](https://nodei.co/npm/fluentnode/)
+
+**node-webkit-repl** is a collection of APIs and repls for [node-webkit](https://github.com/rogerwang/node-webkit)
+
+**how to run (NOTE: these instructions and screenshots are a bit out-of-date with the latest version)**
 
 ```
-git clone https://github.com/o2platform/webkit-repl.git
+git clone https://github.com/o2platform/webkit-repl-repl.git
 cd webkit-repl
 npm install 
 ```
