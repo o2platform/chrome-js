@@ -45,7 +45,7 @@ describe 'test-NodeWebKit-Service |', ->
     before (done)-> nodeWebKit.start -> done()
     after  (done)-> nodeWebKit.stop -> done()
 
-    it 'window_Show', (done)->
+    it 'window_Show()', (done)->
       @timeout(0)
       nodeWebKit.window_Show ->
         #todo: add way to check that window was opened

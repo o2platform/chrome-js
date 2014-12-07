@@ -27,10 +27,12 @@ class NodeWebKit_Service
       callback()
     @process.kill()
 
-  window_Show        : (callback)=> @chrome.eval_Script "require('nw.gui').Window.get().show()"         ,callback
-  window_Hide        : (callback)=> @chrome.eval_Script "require('nw.gui').Window.get().hide()"         ,callback
-  window_ShowDevTools: (callback)=> @chrome.eval_Script "require('nw.gui').Window.get().showDevTools()" ,callback
-  window_HideDevTools: (callback)=> @chrome.eval_Script "require('nw.gui').Window.get().closeDevTools()",callback
+
+  window_Show             : (callback)=> @chrome.eval_Script "require('nw.gui').Window.get().show()"         , callback
+  window_Hide             : (callback)=> @chrome.eval_Script "require('nw.gui').Window.get().hide()"         , callback
+  window_ShowDevTools     : (callback)=> @chrome.eval_Script "require('nw.gui').Window.get().showDevTools()" , callback
+  window_HideDevTools     : (callback)=> @chrome.eval_Script "require('nw.gui').Window.get().closeDevTools()", callback
+
 
   show: ()=> @window_Show()
   hide: ()=> @window_Hide()

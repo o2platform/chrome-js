@@ -10,7 +10,7 @@
       "toolbar": false,
       "frame"  : false,
       "show"   : false,
-      "width"  : 0,
-      "height" : 0
+      "width"  : 800,
+      "height" : 600
     }
 }

@@ -17,6 +17,10 @@ class Remote_Chrome_API
         callback() if callback
 
   runtime_Evaluate: (code, byValue, callback)=>
+    #use base64 encoding to send code to execute to chrome runtime
+    #code_Base64 = new Buffer(code).toString('base64')
+    #codeToEval = "code = new Buffer('#{code_Base64}','base64').toString('ascii');
+    #              new Function(code).apply(this)";
     @_chrome.Runtime.evaluate {expression: code , returnByValue: byValue},  (error, data) ->
       if callback
         if data.wasThrown or error

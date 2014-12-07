@@ -22,6 +22,25 @@ describe 'test-Accessing-Node-WebKit |',->
       data.result.description.assert_Is('Window')
       done();
 
+  it 'current Window position', (done)->
+    code = "var _window = require('nw.gui').Window.get();
+            var value = {
+                            x    : _window.x ,
+                            y    : _window.y,
+                            width: _window.width,
+                            height: _window.height
+                        };
+            value;"
+    chrome.get_Object code,  (value, data)->
+      package_Json = nodeWebKit.path_App.path_Combine('package.json').file_Contents().as_Json()
+      value.width.assert_Is(package_Json.window.width)
+      value.height.assert_Is(package_Json.window.height)
+      value.x.assert_Bigger_Than(0)
+      value.y.assert_Bigger_Than(0)
+      console.log value
+      done()
+
+
   xit 'bug: dummy request to give time to page to be loaded', (done)->
     code = "document.body.innerHTML"
     chrome.eval_Script code, (value, data)->
