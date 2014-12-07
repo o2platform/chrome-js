@@ -55,3 +55,17 @@ describe 'test-Remote_Chrome_API |',->
         data.assert_Is_Object()
             .href.assert_Contains(nodeWebKit.path_App)
         done()
+
+  it 'open', (done)->
+    chrome.open 'nw:version' , (error, data)=>
+      error.assert_Is_False()
+      data.assert_Is_Object()
+          .frameId.assert_Is_String()
+      done()
+
+  it 'html', (done)->
+    chrome.open 'http://www.google.com', ->
+      1000.wait ->
+        chrome.html (html)->
+          html.assert_Contains('ry{if(!google.j.b){document.f&amp;&')
+          done()

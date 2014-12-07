@@ -33,6 +33,11 @@ class Remote_Chrome_API
   get_Object: (value,callback)=>
     @runtime_Evaluate value, true, callback
 
+  open: (url,callback)=>
+    @_chrome.Page.navigate {url:url},  callback
+
+  html: (callback)=>
+    @eval_Script 'document.body.outerHTML', callback
 
 module.exports = Remote_Chrome_API
 

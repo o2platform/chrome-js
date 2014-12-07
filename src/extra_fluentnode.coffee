@@ -1,7 +1,10 @@
 #to add to fluentnode
 Function::invoke_In           = (value   )-> setTimeout @, value
 Function::sourceCode          = (        )-> @ + ""
+
 Number::invoke_After          = (callback)-> setTimeout callback, @
+Number::wait                   = Number::invoke_After
+
 String::http_GET_With_Timeout = (callback)->
   timeout = 500
   delay   = 10;
