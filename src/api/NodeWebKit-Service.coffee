@@ -70,6 +70,7 @@ class NodeWebKit_Service
     @chrome.open url, callback
 
   open_Index: (callback)=>
+    console.log("Opening index page: #{@page_Index}")
     @chrome.open @page_Index, callback
 
 module.exports = NodeWebKit_Service

@@ -28,12 +28,14 @@ describe 'nw-apps | REPL-GUI | test-editor', ->
 
   before (done)->
     nodeWebKit.path_App = path_App
-    nodeWebKit.start ->
-      chrome = nodeWebKit.chrome
-      chrome.open 'app://nwr/editor.html', ->
-        mapHtml ->
-          mapCSS ->
-            done()
+    250.wait ->
+      nodeWebKit.start ->
+        chrome = nodeWebKit.chrome
+        console.log "Chrome: " + chrome
+        chrome.open 'app://nwr/editor.html', ->
+            mapHtml ->
+              mapCSS ->
+                done()
 
   after (done)->
     @timeout(3000)
