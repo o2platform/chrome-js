@@ -1,0 +1,36 @@
+body {
+    overflow: hidden;
+}
+
+#editor {
+    width: 70%;
+    top: 30px;
+    border: 0px;
+    position:absolute;
+    bottom:0px;
+    background: #9bb5de
+}
+#response
+{
+    width: 30%;
+    top: 30px;
+    right: 0px;
+    position:absolute;
+    bottom:0px;
+    background: #68776c;
+
+}
+#response b { color : white; padding: 10px }
+#executeButton
+{
+
+}
+#executionResult
+{
+    position:absolute;
+    background: #f0f0f0;
+    bottom:15px;
+    top:25px;
+    right:15px;
+    left:15px;
+}

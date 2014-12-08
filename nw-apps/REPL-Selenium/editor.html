@@ -38,7 +38,13 @@
         <div id=executionResult>...</div>
     </div>
     <pre id="editor">
-#iframe1.src='https://www.google.com'
+text = "o2platform node-webkit-repl"
+browser.eval "window.location.href='http://www.google.com'", ()->
+    browser.elementByName 'q', (err, element)->
+        element.clear ->
+            element.sendKeys text, nop
+            browser.elementByName 'btnG', (err, button) ->
+                button.click(text)
 
 value = 'The answer is ' + 42;
 return value;

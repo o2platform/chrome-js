@@ -1,9 +1,9 @@
+
+#need to add a detection to App that we are running as a unit test
 return
+App = require '../../../src/selenium/app'
 
-#NOT USED AT THE MOMENT
-App = require '.././app'
-
-describe 'test-App', ->
+describe.only 'test-App', ->
     app = new App()
 
     before (done)->
@@ -21,7 +21,7 @@ describe 'test-App', ->
     it 'constructor',->
         App.assert_Is_Function()
         app.assert_Is_Object()
-        app.selenium_Service.assert_Instance_Of(require('.././Selenium-Service'))
+        app.selenium_Service.assert_Instance_Of(require('../../../src/selenium/Selenium-Service'))
 
     it 'misc tests', (done)->
         app.selenium_Service.url_wd.GET (html)->

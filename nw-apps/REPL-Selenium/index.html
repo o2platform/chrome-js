@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Node WebKit REPL | GUI</title>
+    <style type=text/css>
+    body {width: 100%; height:100%; margin: 0}
+    .iframe1 {
+      width: 100%;
+      height: 50%;
+      border: 0px;
+      position:absolute;
+      
+    }
+    .iframe2 {
+      width: 100%;
+      height: 50%;
+
+      border: 0px;      
+      position:absolute;
+      bottom: 0px;            
+    }
+    </style>    
+    <script src="lib/jquery.js"></script>
+  </head>
+  <body>
+      <iframe src="about:blank" id="iframe1" class='iframe1' ></iframe>
+      <iframe src="editor.html" id="iframe2" class='iframe2'></iframe>
+      <script src="src/config-and-ui.js"></script>
+      <script src="src/webdriver-support.js"></script>
+      <script src="src/repl-support.js"></script>
+  </body>
+</html>

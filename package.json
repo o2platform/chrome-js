@@ -1,6 +1,6 @@
 {
   "name": "node-webkit-repl",
-  "main": "html/index.html",
+  "main": "nw-apps/REPL-GUI/index.html",
   "single-instance": false,
   "window": {
     "toolbar": true,
@@ -21,10 +21,13 @@
     "juice": "^0.5.0",
     "mocha": "^2.0.1",
     "nodewebkit": "^0.11.0",
-    "request": "^2.49.0"
+    "request": "^2.49.0",
+    "selenium-standalone": "^2.44.0-1",
+    "wd": "^0.3.11"
   },
   "scripts": {
-    "start": "./bin/node-webkit-repl gui",
+    "start": "coffee ./src/selenium/app.coffee",
+    "repl-gui": "./bin/node-webkit-repl gui",
     "test": "node ./node_modules/mocha/bin/mocha --compilers=coffee:coffee-script/register --recursive -R list tests",
     "dev-watch": "node ./node_modules/mocha/bin/mocha --compilers=coffee:coffee-script/register -w --recursive -R list tests bin"
   },

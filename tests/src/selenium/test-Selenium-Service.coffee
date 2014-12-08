@@ -1,7 +1,4 @@
-return
-
-#### LEGACAY
-Selenium_Service = require '.././Selenium-Service'
+Selenium_Service = require '../../../src/selenium/Selenium-Service'
 
 describe 'test-Selenium-Service', ->
   show_Logs = false
@@ -15,7 +12,7 @@ describe 'test-Selenium-Service', ->
     selenium.url_hub.assert_Contains(selenium.url_hub).assert_Contains('hub.html')
     selenium.show_Logs.str().assert_Is(show_Logs.str())
 
-    new Selenium_Service(      ).show_Logs.assert_Is_False()
+    new Selenium_Service(      ).show_Logs.assert_Is_True()
     new Selenium_Service(false ).show_Logs.assert_Is_False()
     new Selenium_Service(true  ).show_Logs.assert_Is_True()
     new Selenium_Service(0,1234).port     .assert_Is(1234)

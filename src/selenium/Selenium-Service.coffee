@@ -7,7 +7,7 @@ class Selenium_Service
     @port      = port || 4447
     @url_wd    = "http://localhost:#{@port}"
     @url_hub    = @url_wd.append("/wd/hub/static/resource/hub.html")
-    @show_Logs = if typeof(show_Logs) is 'boolean' then show_Logs else false    # interesting issue here when trying to map this correctly
+    @show_Logs = if typeof(show_Logs) is 'boolean' then show_Logs else true    # interesting issue here when trying to map this correctly
 
   start: (callback)=>
     spawnOptions = { stdio: 'pipe'}

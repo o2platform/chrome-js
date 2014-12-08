@@ -1,13 +1,8 @@
-#TO DO
-return
-
-
-# the code below is more of a WebDriver_Service than an NodeWebKit_Service
 
 wd       = require 'wd'
 class WebDriver_Service
   constructor: (wd_port)->
-    @wd_port       = wd_port || 4444
+    @wd_port       = wd_port || 4447
     @browser       = wd.remote({port: wd_port});
     @url_wd        = 'http://localhost:' + @wd_port
     @url_sessions  = @url_wd + '/wd/hub/sessions'
@@ -26,6 +21,7 @@ class WebDriver_Service
     @browser.close ()=> callback()
 
   window_Open: (callback)=>
+    console.log "PORT " + @wd_port
     @browser.init {browserName:'chrome'}, (err, sessionID, capabilities)=>
       @session_Id = sessionID
       @capabilities = capabilities
@@ -36,7 +32,6 @@ class WebDriver_Service
     @browser.url (err,url)=>
       callback(url)
 
-
   open_New_Browser_Session: (callback)=>
     @window_Open =>
       #setupBrowserLogging(browser)
@@ -44,48 +39,28 @@ class WebDriver_Service
         @browser.eval "console.log('hello')", (err, result)=>
           callback()
 
-module.exports = NodeWebKit_Service
-
-
-return
-
-startNodeWebKit = ()->
-
-  #firstPage = 'file:///Users/diniscruz/_Dev_Tests/node-webkit/my-first-test/index.html'
-
-
-
-
-
-
-  attach_To_Browser_Session = (sessionId,next)->
-    browser.attach sessionId, (error, value)->
+  attach_To_Browser_Session: (sessionId,next)=>
+    @browser.attach sessionId, (error, value)=>
       next()
 
-
-  connect_To_Browser = (next)->
-    url.GET_Json (data)->
+  connect_To_Browser: (next)=>
+    @url_sessions.GET_Json (data)=>
       if (data.value.size() ==0)
-        open_New_Browser_Session(next)
+        @open_New_Browser_Session(next)
       else
-        attach_To_Browser_Session(data.value.first().id,next)
+        @attach_To_Browser_Session(data.value.first().id,next)
 
-  waitForServer ->
-    connect_To_Browser ->
+  setupBrowserLogging: (browser)=>
+    @browser.on 'status', (info) =>
+      console.log('[browser][status]': + info)
+    @browser.on 'command', (eventType, command, response)->
+      console.log('[browser][command] > ' + eventType, command, (response || ''))
+      if command is 'close()'
+        console.log('Window closed, so also stopping the selenium server')
+        setTimeout process.exit, 200
+
+    @browser.on 'http', (meth, path, data)->
+      console.log('[browser][http] > ' + meth, path, (data || ''))
 
 
-
-setupBrowserLogging = (browser)->
-  browser.on 'status', (info) ->
-    console.log('[browser][status]': + info)
-  browser.on 'command', (eventType, command, response)->
-    console.log('[browser][command] > ' + eventType, command, (response || ''))
-    if command is 'close()'
-      console.log('Window closed, so also stopping the selenium server')
-      setTimeout process.exit, 200
-
-  browser.on 'http', (meth, path, data)->
-    console.log('[browser][http] > ' + meth, path, (data || ''))
-
-startSeleniumServer()
-startNodeWebKit()
+module.exports = WebDriver_Service
