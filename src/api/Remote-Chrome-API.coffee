@@ -69,6 +69,7 @@ class Remote_Chrome_API
     @_chrome.Page.loadEventFired (data)=>
       console.log(">>> loadEventFired: #{data.json_pretty()}")
       @page_Events.emit('loadEventFired')
+      @page_Events.removeAllListeners('loadEventFired')
 
     @_chrome.DOM.documentUpdated ()=>
       #console.log(">>> documentUpdated:")
