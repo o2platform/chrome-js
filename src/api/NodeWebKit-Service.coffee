@@ -6,7 +6,7 @@ Remote_Chrome_API  = require('../../src/api/Remote-Chrome-API')
 class NodeWebKit_Service
   constructor: ->
     @path_App        = '/nw-apps/Simple-Invisible'.append_To_Process_Cwd_Path()
-    @page_Index      = 'App://nwr/index.html'
+    @page_Index      = 'app://nwr/index.html'
     @port_Debug      = 50000 + ~~(Math.random()*5000)         #use a random port between 50000 and 55000
     @process         = null
     @chrome          = new Remote_Chrome_API(@port_Debug)
@@ -20,8 +20,10 @@ class NodeWebKit_Service
     callback (replServer) if callback
 
   start: (callback)=>
-    @process = @path_Executable().start_Process("--remote-debugging-port=#{@port_Debug}", @path_App)
-    @chrome.connect(callback)
+    @process = @path_Executable().start_Process('--url=nw:about', "--remote-debugging-port=#{@port_Debug}", @path_App)
+    @chrome.connect =>
+      @open_Index =>
+        callback() if callback
 
   stop: (callback)=>
     @process.on 'exit', ->
@@ -61,8 +63,8 @@ class NodeWebKit_Service
     @chrome.url_Json.json_GET callback
 
 
-  show: ()=> @window_Show()
-  hide: ()=> @window_Hide()
+  show: (callback)=> @window_Show(callback)
+  hide: (callback)=> @window_Hide(callback)
 
   open_Url: (url, callback)=>
     @chrome.open url, callback

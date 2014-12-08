@@ -56,14 +56,14 @@ class Remote_Chrome_API
   hook_Events: ()=>
     @_chrome.Page.enable();
     @_chrome.Page.frameNavigated (data)=>
-      #eventKey = "#{data.frame.id}_#{data.frame.url}"   # doesn't work unless we also track redirects
+      #"got frameNavigated: #{data.frame.id}".log()
       eventKey = data.frame.id
       @page_Events.emit(eventKey)
       @page_Events.removeAllListeners(eventKey)
 
   open: (url,callback)=>
     @_chrome.Page.navigate {url:url},  (error, data)=>
-      if not error and callback
+      if not error
         eventKey = data.frameId
         @page_Events.on eventKey, callback
 

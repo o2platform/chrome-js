@@ -1,11 +1,13 @@
 Remote_Chrome_API  = require('../../src/api/Remote-Chrome-API')
 NodeWebKit_Service = require('../../src/api/NodeWebKit-Service')
 
+
 describe 'test-Remote_Chrome_API |',->
-  nodeWebKit = new NodeWebKit_Service()
+  nodeWebKit = null
   chrome     = null
 
   before (done)->
+    nodeWebKit = new NodeWebKit_Service()
     nodeWebKit.start ->
       chrome = nodeWebKit.chrome      # we need to get this object from here because nodeWebKit will create an NodeWebKit_Service object
       done()
@@ -30,7 +32,7 @@ describe 'test-Remote_Chrome_API |',->
     chrome._chrome.assert_Is_Object()
     options = chrome.json_Options.assert_Is_Object()
     options.id                  .split('-').assert_Size_Is(5)
-    options.url                 .assert_Contains('/nw-apps/Simple-Invisible')
+    options.url                 .assert_Contains('nw:about')
     options.type                .assert_Is('page')
     options.title               .assert_Is('')
     options.description         .assert_Is('')
@@ -58,11 +60,11 @@ describe 'test-Remote_Chrome_API |',->
       assert_Is_Null(data)
       chrome.get_Object 'window.location', (data)->
         data.assert_Is_Object()
-            .href.assert_Contains(nodeWebKit.path_App)
+            .href.assert_Is(nodeWebKit.page_Index)
         done()
 
   it 'open()', (done)->
-    chrome.open 'nw:version' , ()=>
+    chrome.open 'nw:about' , ()=>
       chrome.page_Events._events.keys().assert_Size_Is(1)
       process.nextTick ->
         chrome.page_Events._events.keys().assert_Size_Is(0)
