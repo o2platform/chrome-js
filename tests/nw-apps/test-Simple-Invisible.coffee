@@ -1,6 +1,6 @@
 NodeWebKit_Service = require('../../src/api/NodeWebKit-Service')
 
-describe 'nw-apps | test-Simple-Invisible', ->
+xdescribe 'nw-apps | test-Simple-Invisible', ->
   nodeWebKit = new NodeWebKit_Service()
   chrome     = null
   path_App        = '/nw-apps/Simple-Invisible'.append_To_Process_Cwd_Path()

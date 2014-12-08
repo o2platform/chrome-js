@@ -2,7 +2,7 @@ NodeWebKit_Service = require('../../../src/api/NodeWebKit-Service')
 juice   = require('juice')
 cheerio = require('cheerio')
 
-describe 'nw-apps | REPL-GUI | test-editor', ->
+xdescribe 'nw-apps | REPL-GUI | test-editor', ->
   nodeWebKit = new NodeWebKit_Service()
   chrome     = null
   path_App   = '/nw-apps/REPL-GUI'.append_To_Process_Cwd_Path()
