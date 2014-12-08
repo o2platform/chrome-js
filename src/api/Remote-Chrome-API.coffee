@@ -5,22 +5,32 @@ events    = require('events')
 async     = require('async')
 
 class Remote_Chrome_API
-  constructor: (port_Debug)->
-    @port_Debug   = port_Debug || 9222
-    @url_Json     = "http://127.0.0.1:#{@port_Debug}/json"
-    @page_Events  = new events.EventEmitter()
-    @_chrome      = null
-    @json_Options = null
+  constructor: (port_Debug, connect_To_Id)->
+    @port_Debug     = port_Debug || 9222
+    @url_Json       = "http://127.0.0.1:#{@port_Debug}/json"
+    @page_Events    = new events.EventEmitter()
+    @connect_To_Id = connect_To_Id || null
+    @_chrome        = null
+    @json_Options   = null
 
 
   connect: (callback)->
     options = { host: '127.0.0.1', port: @port_Debug}
-    @url_Json.http_GET_With_Timeout (html)=>
-      @json_Options = JSON.parse(html).first()
-      new Chrome options, (_chrome)=>
-        @_chrome = _chrome
-        @hook_Events()
-        callback() if callback
+    @url_Json.json_GET_With_Timeout (json)=>
+      if @connect_To_Id is null
+        @json_Options = json.first()
+      else
+        for item in json
+          if item.id is @connect_To_Id
+            @json_Options = item
+            continue
+      if @json_Options is null
+        callback null if callback
+      else
+        new Chrome options, (_chrome)=>
+          @_chrome = _chrome
+          @hook_Events()
+          callback() if callback
 
   runtime_Evaluate: (code, byValue, callback)=>
     #use base64 encoding to send code to execute to chrome runtime

@@ -43,20 +43,41 @@ describe 'test-NodeWebKit-Service |', ->
     nodeWebKit.show.assert_Is_Function()
     nodeWebKit.hide.assert_Is_Function()
 
+
   describe 'Need live window', ->
     before (done)-> nodeWebKit.start -> done()
     after  (done)-> nodeWebKit.stop -> done()
 
     it 'window_Show()', (done)->
-      @timeout(0)
       nodeWebKit.window_Show ->
         #todo: add way to check that window was opened
         #nodeWebKit.window_ShowDevTools ->
           nodeWebKit.window_Hide ->
            done()
 
-    it 'open()', (done)->
-      nodeWebKit.open 'nw:about', ->
+    it 'window_New(), window_Get(), window_Close()', (done)->
+      nodeWebKit.window_New (new_Window_Url)->
+        nodeWebKit.windows (windows)=>
+          windows.assert_Size_Is(2)
+          nodeWebKit.window_Get new_Window_Url, (new_Window_NodeWebKit)->
+            new_Window_NodeWebKit.assert_Instance_Of(NodeWebKit_Service)
+            new_Window_NodeWebKit.chrome.assert_Is_Object()
+            new_Window_NodeWebKit.chrome.connect_To_Id.assert_Is_String()
+            new_Window_NodeWebKit.window_Close ->
+              nodeWebKit.windows (windows)=>
+                windows.assert_Size_Is(1)
+                nodeWebKit.window_Get 'aaabbccc', (new_Window_NodeWebKit)->
+                  assert_Is_Null(new_Window_NodeWebKit)
+                  done()
+
+    it 'windows()', (done)->
+      nodeWebKit.windows (windows)->
+        nodeWebKit.chrome.url_Json.json_GET (json)=>
+          windows.assert_Is(json)
+          done();
+
+    it 'open_Url()', (done)->
+      nodeWebKit.open_Url 'nw:about', ->
         nodeWebKit.chrome.html (value,$)->
           $('title').html().assert_Is('node-webkit')
           done();
@@ -170,18 +191,6 @@ describe 'test-NodeWebKit-Service |', ->
       evaluate {returnByValue: true , expression: "Object.keys(require('fs'))"}, (err, data)->
         console.log err,data
         done()
-
-    it 'open google', (done)->
-      chrome.Page.navigate {url: 'http://www.google.com'}, (err, data)->
-        console.log err,data
-          #chrome.Page.navigate {url: 'http://news.google.com'}, ->
-           # chrome.Page.navigate {url: 'http://news.bbc.co.uk'}, ->
-        500.invoke_After ()->done()
-
-    it 'open bbc', (done)->
-      chrome.Page.navigate {url: 'http://news.bbc.co.uk'}, (err, data)->
-        console.log err,data
-        1500.invoke_After ()->done()
 
     it 'open local page', (done)->
       chrome.Page.navigate {url: nodeWebKit.url_First_Page}, (err, data)->

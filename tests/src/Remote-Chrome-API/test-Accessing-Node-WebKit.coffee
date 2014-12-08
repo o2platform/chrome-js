@@ -32,7 +32,7 @@ describe 'test-Accessing-Node-WebKit |',->
                         };
             value;"
     chrome.get_Object code,  (value, data)->
-      package_Json = nodeWebKit.path_App.path_Combine('package.json').file_Contents().as_Json()
+      package_Json = nodeWebKit.path_App.path_Combine('package.json').file_Contents().json_Parse()
       value.width.assert_Is(package_Json.window.width)
       value.height.assert_Is(package_Json.window.height)
       value.x.assert_Bigger_Than(0)
@@ -93,27 +93,3 @@ describe 'test-Accessing-Node-WebKit |',->
           value.assert_Is('<html><head></head><body>42</body></html>')
           $('body').text().assert_Is(42)
           done()
-
-  xit 'using querySelector', (done)->
-    nodeWebKit.open_Index ->
-      chrome.dom_Document (root)->
-        selector = 'p'
-        nodeId   = root.nodeId
-        chrome._chrome.DOM.querySelectorAll {nodeId:nodeId, selector:selector}, (err, data)->
-          console.log err
-          console.log data
-          done();
-
-  # not working since getOuterHTML and getAttributes are not finding the object
-  xit 'use querySelector to find elements on page',(done)->
-    @timeout(0)
-    chrome.open 'app://nwr/index.html',->
-        chrome.eval_Script "document.querySelector('p')", (value,data)->
-          #console.log data
-          nodeId = value.from_Json().id
-          console.log nodeId
-          #chrome._chrome.DOM.getOuterHTML {nodeId: nodeId}, (err, data)->
-          chrome._chrome.DOM.getAttributes {nodeId: nodeId}, (err, data)->
-            console.log err
-            console.log data
-            done()

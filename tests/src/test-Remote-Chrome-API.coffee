@@ -16,12 +16,17 @@ describe 'test-Remote_Chrome_API |',->
 
   it 'constructor',->
     Remote_Chrome_API.assert_Is_Function()
-    chrome.assert_Is_Object().assert_Instance_Of(Remote_Chrome_API)
-    #assert_Is_Null(chrome.json_Options)
-    #assert_Is_Null(chrome._chrome)
+    new_Chrome = new Remote_Chrome_API()
+    new_Chrome.assert_Is_Object().assert_Instance_Of(Remote_Chrome_API)
+    new_Chrome.port_Debug.assert_Is_Number()
+    new_Chrome.url_Json.assert_Contains(new_Chrome.port_Debug)
+    new_Chrome.page_Events.assert_Instance_Of(require('events').EventEmitter)
+    assert_Is_Null(new_Chrome.connect_To_Id)
+    assert_Is_Null(new_Chrome._chrome)
+    assert_Is_Null(new_Chrome.json_Options)
 
-  it 'connect',(done)->
-    #chrome.connect ->          # connect is called by nodeWebKit
+
+  it 'connect()',(done)->
     chrome._chrome.assert_Is_Object()
     options = chrome.json_Options.assert_Is_Object()
     options.id                  .split('-').assert_Size_Is(5)

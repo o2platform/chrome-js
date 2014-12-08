@@ -6,9 +6,16 @@ Number::invoke_After          = (callback)-> setTimeout callback, @
 Number::wait                  = Number::invoke_After
 Number::assert_Bigger_Than    = (value   )-> (@ > value).assert_Is_True()
 Number::assert_Smaller_Than   = (value   )-> (@ < value).assert_Is_True()
-String::as_Json               = (        )->JSON.parse(@)
-String::from_Json             = (        )->JSON.parse(@)
+String::json_Parse            = (        )->JSON.parse(@)
 String::remove                = (value   )->@.replace(value,'')
+
+String::json_GET = (callback)->
+  @.GET (data)->
+    callback data.json_Parse()
+
+String::json_GET_With_Timeout = (callback)->
+  @.http_GET_With_Timeout (data)->
+    callback data.json_Parse()
 
 String::http_GET_With_Timeout = (callback)->
   timeout = 500

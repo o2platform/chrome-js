@@ -28,17 +28,43 @@ class NodeWebKit_Service
       callback()
     @process.kill()
 
-
   window_Show             : (callback)=> @chrome.eval_Script "require('nw.gui').Window.get().show()"         , callback
   window_Hide             : (callback)=> @chrome.eval_Script "require('nw.gui').Window.get().hide()"         , callback
   window_ShowDevTools     : (callback)=> @chrome.eval_Script "require('nw.gui').Window.get().showDevTools()" , callback
   window_HideDevTools     : (callback)=> @chrome.eval_Script "require('nw.gui').Window.get().closeDevTools()", callback
 
+  window_Close            : (callback)=>
+    @chrome.eval_Script "require('nw.gui').Window.get().close()",=>
+      @chrome._chrome.close()
+      @windows (windows)=>
+        callback()
+
+  window_New: (callback)=>
+    new_Window_Url = 'nw://new-window-'.add_Random_Letters(16)
+    @chrome.eval_Script "this['#{new_Window_Url}'] = require('nw.gui').Window.open('#{new_Window_Url}', { 'new-instance': true , show:false})", ->
+      callback(new_Window_Url)
+
+  window_Get: (window_Url,callback) =>
+    @windows (windows)=>
+      window = (window for window in windows when window.url is window_Url).first()
+      if window is null
+        callback null
+      else
+        new_Window_NodeWebKit = new NodeWebKit_Service()          # now that we can create new windows like this, maybe NodeWebKit-Service should be refactored to Window-Service
+        new_Window_NodeWebKit.port_Debug = @port_Debug
+        new_Window_NodeWebKit.process    = @process
+        new_Window_NodeWebKit.chrome     = new Remote_Chrome_API(@port_Debug,window.id)
+        new_Window_NodeWebKit.chrome.connect =>
+          callback(new_Window_NodeWebKit)
+
+  windows: (callback)=>
+    @chrome.url_Json.json_GET callback
+
 
   show: ()=> @window_Show()
   hide: ()=> @window_Hide()
 
-  open: (url, callback)=>
+  open_Url: (url, callback)=>
     @chrome.open url, callback
 
   open_Index: (callback)=>
