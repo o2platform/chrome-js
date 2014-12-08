@@ -11,10 +11,13 @@ describe 'nw-apps | REPL-GUI | test-editor', ->
   $css       = null
 
   mapCSS = (callback)->
-    editor_Page = path_App.path_Combine('editor.html')
-    juice editor_Page, (err, cssHtml) ->
-      $css = cheerio.load(cssHtml)
-      callback()
+    try
+      editor_Page = path_App.path_Combine('editor.html')
+      juice editor_Page, (err, cssHtml) ->
+        $css = cheerio.load(cssHtml)
+        callback()
+    catch error
+      console.log error
 
   mapHtml = (callback)->
     chrome.dom_Document (root)->
@@ -51,6 +54,10 @@ describe 'nw-apps | REPL-GUI | test-editor', ->
       editor_Css.bottom    .assert_Is('0px')
       editor_Css.background.assert_Is('#9bb5de')
 
+      button_Css = $css('button').css()
+      editor_Css["box-sizing"].assert_Is('border-box') # foundation added element
+      #button_Css.json_pretty().log()
+
       done()
 
         #console.log $('#editor').css('top')
@@ -61,10 +68,7 @@ describe 'nw-apps | REPL-GUI | test-editor', ->
       css_Href    =  (link.attribs.href for link in $('link'))
       scripts_Src =  (script.attribs.src for script in $('script'))
 
-      css_Href   .assert_Is([ 'lib/foundation.css' ])
+      css_Href   .assert_Is([ 'css/foundation.css' ,'css/editor.css'])
       scripts_Src.assert_Is([ 'lib/ace.js', 'lib/ext-language_tools.js', 'app://nwr/lib/mode-coffee.js', undefined ])
 
-      #for script of $('script')
-      #  console.log script.attr('src')
-      #  #console.log $('script').length
       done()

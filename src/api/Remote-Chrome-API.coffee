@@ -27,7 +27,9 @@ class Remote_Chrome_API
       if @json_Options is null
         callback null if callback
       else
+        console.log @json_Options.devtoolsFrontendUrl
         new Chrome options, (_chrome)=>
+          console.log "Got chrome: " + _chrome
           @_chrome = _chrome
           @hook_Events()
           callback() if callback
