@@ -56,16 +56,35 @@ class Remote_Chrome_API
   hook_Events: ()=>
     @_chrome.Page.enable();
     @_chrome.Page.frameNavigated (data)=>
-      #"got frameNavigated: #{data.frame.id}".log()
+      #console.log(">>> frameNavigated: #{data.json_pretty()}")
+      #console.log(">>> frameNavigated #{data.frame.url}")
       eventKey = data.frame.id
       @page_Events.emit(eventKey)
-      @page_Events.removeAllListeners(eventKey)
+
+    @_chrome.Page.domContentEventFired (data)=>
+      #console.log(">>> domContentEventFired: #{data.json_pretty()}")
+
+    @_chrome.Page.loadEventFired (data)=>
+      #console.log(">>> loadEventFired: #{data.json_pretty()}")
+      @page_Events.emit('loadEventFired')
+
+    @_chrome.DOM.documentUpdated ()=>
+      #console.log(">>> documentUpdated:")
+
+    @_chrome.Page.frameNavigated (data)=>
 
   open: (url,callback)=>
     @_chrome.Page.navigate {url:url},  (error, data)=>
       if not error
         eventKey = data.frameId
-        @page_Events.on eventKey, callback
+
+        @page_Events.removeAllListeners('loadEventFired')   # seems to be more reliable (but we don't an eventKey
+        @page_Events.on 'loadEventFired', callback          # the problem is that at the moment if we get the DOM just after an frameNavigated, in losts of cases
+                                                            # the DOM is not fully (loaded)
+
+        @page_Events.removeAllListeners(eventKey)
+        #@page_Events.on eventKey, callback
+
 
   html: (callback)=>
     @eval_Script 'document.documentElement.outerHTML', (value)->

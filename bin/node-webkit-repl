@@ -17,7 +17,13 @@ program.command('gui')
        .description('Start Gui')
        .action(function(env, options)
          {
-                'nodewebkit'.start_Process_Redirect_Console('nw-apps/REPL-GUI')
+             nodeWebKit = new NodeWebKit_Service()
+             path_App   = '/nw-apps/REPL-GUI'.append_To_Process_Cwd_Path()
+             nodeWebKit.path_App = path_App
+             nodeWebKit.start(function() {
+                nodeWebKit.window_Show(function() {
+                })
+             })
          })
 
 program.parse(process.argv)

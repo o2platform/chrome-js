@@ -116,8 +116,6 @@ describe 'test-NodeWebKit-Service', ->
   selenium   = null
   browser    = null
 
-  @timeout(5000)
-
   before (done)->
     show_Logs  = true
     selenium   = new Selenium_Service(show_Logs)
