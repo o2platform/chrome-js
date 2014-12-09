@@ -44,7 +44,7 @@ describe 'test-NodeWebKit-Service |', ->
     nodeWebKit.hide.assert_Is_Function()
 
 
-  describe 'Need live window', ->
+  describe 'Need live window | ', ->
     before (done)-> nodeWebKit.start -> done()
     after  (done)-> nodeWebKit.stop -> done()
 

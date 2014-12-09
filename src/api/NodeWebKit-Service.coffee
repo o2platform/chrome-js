@@ -5,6 +5,7 @@ Remote_Chrome_API  = require('../../src/api/Remote-Chrome-API')
 
 class NodeWebKit_Service
   constructor: (port_Debug)->
+
     @path_App        = '/nw-apps/Simple-Invisible'.append_To_Process_Cwd_Path()
     @page_Index      = 'app://nwr/index.html'
     @port_Debug      = port_Debug || 50000 + ~~(Math.random()*5000)         #use a random port between 50000 and 55000
@@ -22,8 +23,8 @@ class NodeWebKit_Service
   start: (callback)=>
     @process = @path_Executable().start_Process('--url=nw:about', "--remote-debugging-port=#{@port_Debug}", @path_App)
     @chrome.connect =>
-      #@open_Index =>     # locally edited
-      callback() if callback
+      @open_Index =>     # locally edited
+        callback() if callback
 
   stop: (callback)=>
     @process.on 'exit', ->

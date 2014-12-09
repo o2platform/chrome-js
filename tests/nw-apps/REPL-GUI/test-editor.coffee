@@ -2,13 +2,15 @@ NodeWebKit_Service = require('../../../src/api/NodeWebKit-Service')
 juice   = require('juice')
 cheerio = require('cheerio')
 
-xdescribe 'nw-apps | REPL-GUI | test-editor', ->
+describe 'nw-apps | REPL-GUI | test-editor', ->
   nodeWebKit = new NodeWebKit_Service()
   chrome     = null
   path_App   = '/nw-apps/REPL-GUI'.append_To_Process_Cwd_Path()
   html       = null
   $          = null
   $css       = null
+
+  @timeout(5000)
 
   mapCSS = (callback)->
     try
@@ -31,7 +33,7 @@ xdescribe 'nw-apps | REPL-GUI | test-editor', ->
     250.wait ->
       nodeWebKit.start ->
         chrome = nodeWebKit.chrome
-        console.log "Chrome: " + chrome
+        #console.log "Chrome: " + chrome
         chrome.open 'app://nwr/editor.html', ->
             mapHtml ->
               mapCSS ->
