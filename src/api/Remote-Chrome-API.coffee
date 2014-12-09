@@ -59,7 +59,7 @@ class Remote_Chrome_API
     @_chrome.Page.enable();
     @_chrome.Page.frameNavigated (data)=>
       #console.log(">>> frameNavigated: #{data.json_pretty()}")
-      console.log(">>> frameNavigated #{data.frame.url}")
+      #console.log(">>> frameNavigated #{data.frame.url}")
       eventKey = data.frame.id
       @page_Events.emit(eventKey)
 
@@ -67,7 +67,7 @@ class Remote_Chrome_API
       #console.log(">>> domContentEventFired: #{data.json_pretty()}")
 
     @_chrome.Page.loadEventFired (data)=>
-      console.log(">>> loadEventFired: #{data.json_pretty()}")
+      #console.log(">>> loadEventFired: #{data.json_pretty()}")
       @page_Events.emit('loadEventFired')
       @page_Events.removeAllListeners('loadEventFired')
 
@@ -80,7 +80,6 @@ class Remote_Chrome_API
     @_chrome.Page.navigate {url:url},  (error, data)=>
       if not error
         eventKey = data.frameId
-        ">>> console.log: setting events for page; #{url}".log()
         @page_Events.removeAllListeners('loadEventFired')   # seems to be more reliable (but we don't an eventKey
         @page_Events.on 'loadEventFired', callback          # the problem is that at the moment if we get the DOM just after an frameNavigated, in losts of cases
                                                             # the DOM is not fully (loaded)
