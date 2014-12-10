@@ -126,3 +126,16 @@ describe 'test-Remote_Chrome_API |',->
         first_P.html.assert_Contains('This is the and index page')
         first_P.html.assert_Is(first_P.$.html())
         done();
+
+  it.only 'show_Message', (done)->
+    title   = 'abc_'.add_Random_Letters(16)
+    message = '123_'.add_Random_Letters(16)
+    chrome.show_Message title,message, ->                   # send a title, message and callback
+      chrome.html (html, $)->
+        $('#title').html().assert_Is(title)
+        $('#message').html().assert_Is(message)
+        chrome.show_Message message, ->                     # send a title and callback
+          chrome.html (html, $)->
+            $('#title').html().assert_Is(message)
+            assert_Is_Null($('#message').html())
+            done()
