@@ -70,7 +70,7 @@ describe 'test-Remote_Chrome_API |',->
       #  chrome.page_Events._events.keys().assert_Size_Is(1)
       done()
 
-  it.only 'cookies, set_Not_HttpOnly_Cookies', (done)=>
+  it 'cookies, set_Not_HttpOnly_Cookies', (done)=>
     chrome.open 'app://cookie-domain/index.html', ->
       chrome.cookies (value)->
         value.assert_Is([])
