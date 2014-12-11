@@ -70,6 +70,33 @@ describe 'test-Remote_Chrome_API |',->
       #  chrome.page_Events._events.keys().assert_Size_Is(1)
       done()
 
+  it.only 'cookies, set_Not_HttpOnly_Cookies', (done)=>
+    chrome.open 'app://cookie-domain/index.html', ->
+      chrome.cookies (value)->
+        value.assert_Is([])
+        chrome.set_Not_HttpOnly_Cookies 'cookie_Key=Cookie_Value;abc=123', ->     # note that the 2nd cookie is not set here
+          chrome.cookies (value)->
+            value.assert_Size_Is(1)
+            cookie = value.first()
+            cookie.name  .assert_Is('cookie_Key')
+            cookie.value .assert_Is('Cookie_Value')
+            cookie.domain.assert_Is('cookie-domain')
+            chrome.set_Not_HttpOnly_Cookies 'abc=123', ->
+              chrome.cookies (value)->
+                value.assert_Size_Is(2)
+                cookie = value.second()
+                cookie.name  .assert_Is('abc')
+                cookie.value .assert_Is('123')
+                cookie.domain.assert_Is('cookie-domain')
+                chrome.delete_Cookie 'abc','http://cookie-domain/', ->
+                  chrome.cookies (value)->
+                    value.assert_Size_Is(1)
+                    chrome.delete_Cookie 'cookie_Key','http://cookie-domain/', ->
+                      chrome.cookies (value)->
+                        value.assert_Size_Is(0)
+                        done()
+
+
   it 'html()', (done)->
     chrome.open 'app://abc/index.html', ->
       chrome.html (value,$)->
@@ -127,7 +154,7 @@ describe 'test-Remote_Chrome_API |',->
         first_P.html.assert_Is(first_P.$.html())
         done();
 
-  it.only 'show_Message', (done)->
+  it 'show_Message', (done)->
     title   = 'abc_'.add_Random_Letters(16)
     message = '123_'.add_Random_Letters(16)
     chrome.show_Message title,message, ->                   # send a title, message and callback
@@ -139,3 +166,8 @@ describe 'test-Remote_Chrome_API |',->
             $('#title').html().assert_Is(message)
             assert_Is_Null($('#message').html())
             done()
+  it 'url', (done)->
+    nodeWebKit.open_Index ->
+      chrome.url (value)->
+          value.assert_Is('app://nwr/index.html')
+          done();

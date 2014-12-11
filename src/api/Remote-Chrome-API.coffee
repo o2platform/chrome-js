@@ -28,12 +28,12 @@ class Remote_Chrome_API
         console.log '[connect] @json_Options  was null'
         callback null if callback
       else
-        console.log "1) #{@json_Options.devtoolsFrontendUrl}"
+        #console.log "1) #{@json_Options.devtoolsFrontendUrl}"
         new Chrome options, (_chrome)=>
-          console.log "2) Got chrome: #{ _chrome}"
+          #console.log "2) Got chrome: #{ _chrome}"
           @_chrome = _chrome
           @hook_Events()
-          console.log "3) after hooking events: #{typeof(callback)}"
+          #console.log "3) after hooking events: #{typeof(callback)}"
           callback() if callback
 
   runtime_Evaluate: (code, byValue, callback)=>
@@ -42,14 +42,16 @@ class Remote_Chrome_API
     #codeToEval = "code = new Buffer('#{code_Base64}','base64').toString('ascii');
     #              new Function(code).apply(this)";
     @_chrome.Runtime.evaluate {expression: code , returnByValue: byValue},  (error, data) ->
-      if callback
-        if data.wasThrown or error
-          callback(null, data)
+      if callback not instanceof Function
+        callback = (value, data)->console.log(data)
+
+      if data.wasThrown or error
+        callback(null, data)
+      else
+        if(data.result.value)
+          callback(data.result.value, data)
         else
-          if(data.result.value)
-            callback(data.result.value, data)
-          else
-            callback(data.result.objectId, data)
+          callback(data.result.objectId, data)
 
   eval_Script: (code,callback)=>
     @runtime_Evaluate(code, false, callback)
@@ -90,6 +92,19 @@ class Remote_Chrome_API
         #@page_Events.on eventKey, callback
 
 
+  #dom and window helpers
+
+  cookies: (callback)=>
+    @_chrome.Page.getCookies (err,data)->
+      callback(data.cookies)
+
+  delete_Cookie: (cookieName, url, callback)->
+    @_chrome.Page.deleteCookie {cookieName:cookieName, url: url}, (err, data)->
+      callback()
+
+  set_Not_HttpOnly_Cookies: (value, callback)=>
+    @eval_Script "document.cookie='#{value}'", callback
+
   html: (callback)=>
     @eval_Script 'document.documentElement.outerHTML', (value)->
       $ = if (value) then cheerio.load(value) else null
@@ -125,7 +140,8 @@ class Remote_Chrome_API
 
         async.each results.nodeIds, map_NodeId_Html, ()-> callback(all_Data)
 
-
+  url: (callback)=>
+    @eval_Script 'window.location.href', callback
 
   #misc code helpers
   show_Message: (title, message, callback)=>
