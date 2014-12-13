@@ -1,11 +1,11 @@
-Node-WebKit-REPL[![Build Status](https://travis-ci.org/o2platform/node-webkit-repl.svg?branch=master)](https://travis-ci.org/o2platform/node-webkit-repl)
+NWR - Node-WebKit-REPL[![Build Status](https://travis-ci.org/o2platform/node-webkit-repl.svg?branch=master)](https://travis-ci.org/o2platform/node-webkit-repl)
 ==========
 
-[![NPM](https://nodei.co/npm/node-webkit-repl.png)](https://nodei.co/npm/fluentnode/)
+[![NPM](https://nodei.co/npm/nwr.png)](https://nodei.co/npm/nwr/)
 
-[![NPM](https://nodei.co/npm-dl/node-webkit-repl.png)](https://nodei.co/npm/fluentnode/)
+[![NPM](https://nodei.co/npm-dl/nwr.png)](https://nodei.co/npm/nwr/)
 
-**node-webkit-repl** is a collection of APIs and repls for [node-webkit](https://github.com/rogerwang/node-webkit)
+NWR is a collection of APIs and repls for [node-webkit](https://github.com/rogerwang/node-webkit)
 
 **how to run (NOTE: these instructions and screenshots are a bit out-of-date with the latest version)**
 
