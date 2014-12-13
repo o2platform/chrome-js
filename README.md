@@ -1,4 +1,4 @@
-NWR - Node-WebKit-REPL[![Build Status](https://travis-ci.org/o2platform/node-webkit-repl.svg?branch=master)](https://travis-ci.org/o2platform/node-webkit-repl)
+NWR - Node-WebKit-REPL[![Build Status](https://travis-ci.org/o2platform/nwr.svg?branch=master)](https://travis-ci.org/o2platform/nwr)
 ==========
 
 [![NPM](https://nodei.co/npm/nwr.png)](https://nodei.co/npm/nwr/)
