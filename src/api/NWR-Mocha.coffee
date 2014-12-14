@@ -110,9 +110,10 @@ class NWR_Mocha
 singleton  = null
 
 
-NWR_Mocha.create = (before, after)->
+NWR_Mocha.create = (path_App,before, after)->
   if singleton is null
     singleton = new NWR_Mocha()
+    singleton.nodeWebKit.path_App = path_App.append_To_Process_Cwd_Path()
 
   if typeof(before) == 'function'           # set these mocha events here so that the user (writting the unit test) doesn't have to
     before (done)->

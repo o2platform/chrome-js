@@ -1,7 +1,7 @@
 require 'fluentnode'
 
 nodewebkit         = require 'nodewebkit'
-Remote_Chrome_API  = require('../../src/api/Remote-Chrome-API')
+Remote_Chrome_API  = require('../api/Remote-Chrome-API')
 
 class NodeWebKit_Service
   constructor: (port_Debug)->
@@ -21,6 +21,7 @@ class NodeWebKit_Service
     callback (replServer) if callback
 
   start: (callback)=>
+    console.log @path_App
     @process = @path_Executable().start_Process('--url=nw:about', "--remote-debugging-port=#{@port_Debug}", @path_App)
     @chrome.connect =>
       @open_Index =>     # locally edited

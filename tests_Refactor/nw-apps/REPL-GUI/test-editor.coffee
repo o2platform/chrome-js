@@ -1,16 +1,21 @@
-NodeWebKit_Service = require('../../../src/api/NodeWebKit-Service')
+#NodeWebKit_Service = require('../../../src/api/NodeWebKit-Service')
+NWR_Mocha = require('../../../src/api/NWR-Mocha')
+
 juice   = require('juice')
 cheerio = require('cheerio')
 
 describe 'nw-apps | REPL-GUI | test-editor', ->
-  nodeWebKit = new NodeWebKit_Service()
-  chrome     = null
+#  nodeWebKit = new NodeWebKit_Service()
+#  chrome     = null
   path_App   = '/nw-apps/REPL-GUI'.append_To_Process_Cwd_Path()
+  nwr = NWR_Mocha.create('/nw-apps/REPL-GUI',before,after)
+  chrome     = null
   html       = null
   $          = null
   $css       = null
 
-  @timeout(5000)
+  #@timeout(5000)
+
 
   mapCSS = (callback)->
     try
@@ -22,28 +27,41 @@ describe 'nw-apps | REPL-GUI | test-editor', ->
       console.log error
 
   mapHtml = (callback)->
-    chrome.dom_Document (root)->
-      chrome.dom_Html root.nodeId, (data)->
+    nwr.chrome.dom_Document (root)->
+      nwr.chrome.dom_Html root.nodeId, (data)->
         html = data.html
         $ =data.$
         callback()
 
   before (done)->
-    nodeWebKit.path_App = path_App
-    250.wait ->
-      nodeWebKit.start ->
-        chrome = nodeWebKit.chrome
-        #console.log "Chrome: " + chrome
-        chrome.open 'app://nwr/editor.html', ->
+    nwr.nodeWebKit.show ->
+      nwr.window_Position 1000,40,600,1000, (err,data)->
+        500.wait ->
+          done()
+
+
+
+  after (done)->
+    #nwr.nodeWebKit.stop()
+    done()
+
+
+  before (done)->
+#    nodeWebKit.path_App = path_App
+#    250.wait ->
+#      nodeWebKit.start ->
+#        chrome = nwr.nodeWebKit.chrome
+#        #console.log "Chrome: " + chrome
+        nwr.chrome.open 'app://nwr/editor.html', ->
             mapHtml ->
               mapCSS ->
                 done()
-
-  after (done)->
-    @timeout(3000)
-    0.wait ->
-      nodeWebKit.stop  ->
-        done()
+#
+#  after (done)->
+#    @timeout(3000)
+#    0.wait ->
+#      nodeWebKit.stop  ->
+#        done()
 
   afterEach (done)->
     #1000.wait ->
@@ -68,6 +86,8 @@ describe 'nw-apps | REPL-GUI | test-editor', ->
         #html.log()
 
   it 'check html elements on page', (done)->
+      done()
+      return
       $('title').text().assert_Is('REPL-GUI | Editor')
       css_Href    =  (link.attribs.href for link in $('link'))
       scripts_Src =  (script.attribs.src for script in $('script'))

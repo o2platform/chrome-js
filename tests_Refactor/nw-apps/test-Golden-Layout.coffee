@@ -2,11 +2,7 @@ NWR_Mocha = require('../../src/api/NWR-Mocha')
 
 describe 'nw-apps | test-Golden-Layout', ->
 
-  nwr = NWR_Mocha.create(before,after)
-  chrome     = null
-  path_App        = '/nw-apps/Golden-Layout'.append_To_Process_Cwd_Path()
-  nwr.nodeWebKit.path_App = path_App
-
+  nwr = NWR_Mocha.create('/nw-apps/Golden-Layout', before,after)
 
   after (done)->
     nwr.nodeWebKit.stop ->
