@@ -1,0 +1,13 @@
+{
+  "main"           : "index.html",
+  "single-instance": false,
+  "window":
+  {
+    "title"  : "NWR - Golden Layout",
+    "toolbar": true,
+    "frame"  : true,
+    "show"   : true,
+    "width"  : 800,
+    "height" : 600
+  }
+}
