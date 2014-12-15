@@ -2,27 +2,7 @@ NodeWebKit_Service = require './../../src/api/NodeWebKit-Service'
 
 describe 'test-NodeWebKit-Service |', ->
 
-  nodeWebKit = null
 
-  before ->
-    nodeWebKit = new NodeWebKit_Service()
-
-  it 'constructor',->
-    NodeWebKit_Service.assert_Is_Function()
-    nodeWebKit.assert_Is_Object()
-    (50000  < nodeWebKit.port_Debug < 55000).assert_Is_True()
-    nodeWebKit.path_App.assert_Contains('/nw-apps/Simple-Invisible')
-    nodeWebKit.page_Index.assert_Is('app://nwr/index.html')
-    nodeWebKit.chrome.assert_Instance_Of(require('../../src/api/Remote-Chrome-API'))
-                     .port_Debug.assert_Is(nodeWebKit.port_Debug)
-
-    assert_Is_Null(nodeWebKit.process)
-
-  it 'path_Executable()', ()->
-    if (require('os').platform() is 'darwin')
-      nodeWebKit.path_Executable().assert_Contains('node-webkit.app/Contents/MacOS/node-webkit')
-    else
-      nodeWebKit.path_Executable().assert_Contains('nw')
 
   it 'repl', (done)->
     nodeWebKit.repl (replServer)=>
@@ -31,13 +11,6 @@ describe 'test-NodeWebKit-Service |', ->
         done()
       replServer.commands['.exit'].action.apply(replServer)
 
-  it 'start(), stop()', (done)->
-    assert_Is_Null(nodeWebKit.process)
-    nodeWebKit.start ->
-      nodeWebKit.process.assert_Is_Object()
-      nodeWebKit.process.pid.assert_Is_Number()
-      nodeWebKit.chrome._chrome.assert_Is_Object()
-      nodeWebKit.stop(done)
 
   it 'extra method mappings',->
     nodeWebKit.show.assert_Is_Function()

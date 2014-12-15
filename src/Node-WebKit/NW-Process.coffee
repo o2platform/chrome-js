@@ -1,81 +1,79 @@
 require 'fluentnode'
-
+require '../extra_fluentnode'
 nodewebkit         = require 'nodewebkit'
-Remote_Chrome_API  = require('../api/Remote-Chrome-API')
 
-class NodeWebKit_Service
-  constructor: (port_Debug)->
 
-    @path_App        = '/nw-apps/Simple-Invisible'.append_To_Process_Cwd_Path()
-    @page_Index      = 'app://nwr/index.html'
-    @port_Debug      = port_Debug || 50000 + ~~(Math.random()*5000)         #use a random port between 50000 and 55000
+class NW_Process
+
+  constructor: (options)->
+    @options         = options || {}
+    @name            = '--nwr-' + (@options.name || 'process')
+    @path_App        = @options.path_App    || '/nw-apps/Simple-Invisible'.append_To_Process_Cwd_Path()
+    @url_Default     = @options.url_Default || 'app://nwr/index.html'
+    @port            = @options.port || 50000 + ~~(Math.random()*5000)         #use a random port between 50000 and 55000
+    @url_Chrome      = "http://127.0.0.1:#{@port}/json"
+    @process_Params  = ['--url=nw:about', "--remote-debugging-port=#{@port}", @path_App , @name]
     @process         = null
-    @chrome          = new Remote_Chrome_API(@port_Debug)
+    @process_Id      = @options.process_Id || null
 
-  path_Executable: ->
+
+  path_NW_Executable: ->
     nodewebkit.findpath()
 
-  repl: (callback)=>
-    replServer = @.repl_Me ()=>
-    replServer.context.nwr = @
-    callback (replServer) if callback
-
   start: (callback)=>
-    console.log @path_App
-    @process = @path_Executable().start_Process('--url=nw:about', "--remote-debugging-port=#{@port_Debug}", @path_App)
-    @chrome.connect =>
-      @open_Index =>     # locally edited
-        callback() if callback
+    @process = @path_NW_Executable().start_Process(@process_Params)
+    @url_Chrome.json_GET_With_Timeout ()=>
+      callback()
 
   stop: (callback)=>
-    @process.on 'exit', ->
+    if @process is null
+      if @processId isnt null
+        process.kill(@processId)
       callback()
-    @process.kill()
-
-  window_Show             : (callback)=> @chrome.eval_Script "require('nw.gui').Window.get().show()"         , callback
-  window_Hide             : (callback)=> @chrome.eval_Script "require('nw.gui').Window.get().hide()"         , callback
-  window_ShowDevTools     : (callback)=> @chrome.eval_Script "require('nw.gui').Window.get().showDevTools()" , callback
-  window_HideDevTools     : (callback)=> @chrome.eval_Script "require('nw.gui').Window.get().closeDevTools()", callback
-
-  window_Close            : (callback)=>
-    @chrome.eval_Script "require('nw.gui').Window.get().close()",=>
-      @chrome._chrome.close()
-      @windows (windows)=>
+    else
+      @process.on 'exit', =>
         callback()
-
-  window_New: (callback)=>
-    new_Window_Url = 'nw://new-window-'.add_Random_Letters(16)
-    @chrome.eval_Script "this['#{new_Window_Url}'] = require('nw.gui').Window.open('#{new_Window_Url}', { 'new-instance': true , show:false})", ->
-      callback(new_Window_Url)
-
-  window_Get: (window_Url,callback) =>
-    @windows (windows)=>
-      window = (window for window in windows when window.url is window_Url).first()
-      if window is null
-        callback null
-      else
-        new_Window_NodeWebKit = new NodeWebKit_Service()          # now that we can create new windows like this, maybe NodeWebKit-Service should be refactored to Window-Service
-        new_Window_NodeWebKit.port_Debug = @port_Debug
-        new_Window_NodeWebKit.process    = @process
-        new_Window_NodeWebKit.chrome     = new Remote_Chrome_API(@port_Debug,window.id)
-        new_Window_NodeWebKit.chrome.connect =>
-          callback(new_Window_NodeWebKit)
-
-  windows: (callback)=>
-    @chrome.url_Json.json_GET callback
+      @process.kill()
 
 
-  show: (callback)=> @window_Show(callback)
-  hide: (callback)=> @window_Hide(callback)
+# static methods
 
-  open_Url: (url, callback)=>
-    @chrome.open url, callback
+NW_Process.attach = (processId, port)->
 
-  open_Index: (callback)=>
-    #console.log("Opening index page: #{@page_Index}")
-    @chrome.open @page_Index, callback
+NW_Process.find_NWR_Process_Ids = (name, callback)->
 
-module.exports = NodeWebKit_Service
+  if process.platform is 'win32'        # this method is not supported in windows
+    callback([])
+  else
+    name ?= 'process'
+    'ps'.start_Process_Capture_Console_Out 'ax', (data)->     # equivalent of running: #s ax | grep "node-webkit.*remote-debugging-port.*nw-apps" | awk "{ print $7 }" '
+      matches = for line in data.trim().split('\n') when (line.contains('remote-debugging-port') and line.contains("--nwr-#{name}"))
+        items = line.split(' ')
+        { pid: items[1], port: items[15].split('=')[1] , name:items[17]}
+      callback(matches)
+
+NW_Process.stop_All_NWR_Processes = (callback)=>
+  NW_Process.find_NWR_Process_Ids '', (matches)->
+    for match in matches
+      process.kill(match.pid)
+    callback()
+
+NW_Process.get = (name,callback)->
+  if name instanceof Function
+    callback = name
+    name = null
+  NW_Process.find_NWR_Process_Ids name, (matches)->
+    if (not matches.empty())
+      match = matches.first()                     # for now only use the first match
+      nwProcess= new NW_Process({ name : name , port: match.port, process_Id : match.pid})
+      callback(nwProcess)
+    else
+      nwProcess= new NW_Process()
+      nwProcess.start ->
+        callback(nwProcess)
+
+
+module.exports = NW_Process
 
 
 
