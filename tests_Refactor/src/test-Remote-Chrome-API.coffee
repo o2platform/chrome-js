@@ -6,26 +6,16 @@ describe 'test-Remote_Chrome_API |',->
   nodeWebKit = null
   chrome     = null
 
-  before (done)->
-    nodeWebKit = new NodeWebKit_Service()
-    nodeWebKit.start ->
-      chrome = nodeWebKit.chrome      # we need to get this object from here because nodeWebKit will create an NodeWebKit_Service object
-      done()
+ #before (done)->
+ #  nodeWebKit = new NodeWebKit_Service()
+ #  nodeWebKit.start ->
+ #    chrome = nodeWebKit.chrome      # we need to get this object from here because nodeWebKit will create an NodeWebKit_Service object
+ #    done()
 
-  after (done)->
-    nodeWebKit.stop ->
-      done()
+ #after (done)->
+ #  nodeWebKit.stop ->
+ #    done()
 
-  it 'constructor',->
-    Remote_Chrome_API.assert_Is_Function()
-    new_Chrome = new Remote_Chrome_API()
-    new_Chrome.assert_Is_Object().assert_Instance_Of(Remote_Chrome_API)
-    new_Chrome.port_Debug.assert_Is_Number()
-    new_Chrome.url_Json.assert_Contains(new_Chrome.port_Debug)
-    new_Chrome.page_Events.assert_Instance_Of(require('events').EventEmitter)
-    assert_Is_Null(new_Chrome.connect_To_Id)
-    assert_Is_Null(new_Chrome._chrome)
-    assert_Is_Null(new_Chrome.json_Options)
 
 
   it 'connect()',(done)->

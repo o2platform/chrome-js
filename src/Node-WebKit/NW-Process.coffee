@@ -1,7 +1,8 @@
 require 'fluentnode'
 require '../extra_fluentnode'
-nodewebkit         = require 'nodewebkit'
-
+nodewebkit  = require 'nodewebkit'
+Chrome      = require('chrome-remote-interface')
+CRI_Json    = require('./CRI-Json')
 
 class NW_Process
 
@@ -11,10 +12,10 @@ class NW_Process
     @path_App        = @options.path_App    || '/nw-apps/Simple-Invisible'.append_To_Process_Cwd_Path()
     @url_Default     = @options.url_Default || 'app://nwr/index.html'
     @port            = @options.port || 50000 + ~~(Math.random()*5000)         #use a random port between 50000 and 55000
-    @url_Chrome      = "http://127.0.0.1:#{@port}/json"
-    @process_Params  = ['--url=nw:about', "--remote-debugging-port=#{@port}", @path_App , @name]
-    @process         = null
+    @process_Params  = ['--url=nw:about', "--remote-debugging-port=#{@port}", @path_App , @name, '--description=123']
     @process_Id      = @options.process_Id || null
+    @process         = null
+    @cri             = new CRI_Json(@port)
 
 
   path_NW_Executable: ->
@@ -22,7 +23,7 @@ class NW_Process
 
   start: (callback)=>
     @process = @path_NW_Executable().start_Process(@process_Params)
-    @url_Chrome.json_GET_With_Timeout ()=>
+    @cri.wait_For_Start =>
       callback()
 
   stop: (callback)=>
@@ -34,6 +35,11 @@ class NW_Process
       @process.on 'exit', =>
         callback()
       @process.kill()
+
+  available_Windows: (callback)=>
+    @cri.json (json)=>
+      log json
+      callback()
 
 
 # static methods
@@ -49,7 +55,8 @@ NW_Process.find_NWR_Process_Ids = (name, callback)->
     'ps'.start_Process_Capture_Console_Out 'ax', (data)->     # equivalent of running: #s ax | grep "node-webkit.*remote-debugging-port.*nw-apps" | awk "{ print $7 }" '
       matches = for line in data.trim().split('\n') when (line.contains('remote-debugging-port') and line.contains("--nwr-#{name}"))
         items = line.split(' ')
-        { pid: items[1], port: items[15].split('=')[1] , name:items[17]}
+        size = items.size()
+        { pid: items[1], port: items[size-3].split('=')[1] , name:items[size-1]}            # this needs improvement since we really shouldn't be using indexes
       callback(matches)
 
 NW_Process.stop_All_NWR_Processes = (callback)=>
