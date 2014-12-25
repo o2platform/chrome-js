@@ -7,7 +7,7 @@ NWR - Node-WebKit-REPL [![Build Status](git )](https://travis-ci.org/o2platform/
 
 NWR is a collection of APIs and repls for [node-webkit](https://github.com/rogerwang/node-webkit)
 
-**how to run (NOTE: these instructions and screenshots are a bit out-of-date with the latest version)**
+**How to run (NOTE: these instructions and screenshots are a bit out-of-date with the latest version)**
 
 ```
 git clone https://github.com/o2platform/webkit-repl-repl.git
