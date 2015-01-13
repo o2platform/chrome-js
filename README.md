@@ -7,13 +7,19 @@ NWR - Node-WebKit-REPL [![Build Status](https://travis-ci.org/o2platform/nwr.svg
 
 NWR is a collection of APIs and repls for [node-webkit](https://github.com/rogerwang/node-webkit)
 
-**How to run (NOTE: these instructions and screenshots are a bit out-of-date with the latest version)**
+[TM_4_0_QA](https://github.com/TeamMentor/TM_4_0_QA) uses NWR to run its Tests (which can be seen in action in this [video](http://vimeo.com/116027788))
+
+
+**How to run**
 
 ```
 git clone https://github.com/o2platform/webkit-repl-repl.git
 cd webkit-repl
 npm install 
 ```
+
+**(NOTE: these instructions and screenshots are a bit out-of-date with the latest version)**
+
 as per documented at https://github.com/rogerwang/node-webkit/wiki/Chromedriver you need to download the chrome driver for your platform 
 from http://dl.node-webkit.org/v0.11.2/ and copy it into the ```./node_modules/nodewebkit/nodewebkit``` folder.
 
