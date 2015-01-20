@@ -10,13 +10,11 @@ NWR is a collection of APIs and repls for [node-webkit](https://github.com/roger
 [TM_4_0_QA](https://github.com/TeamMentor/TM_4_0_QA) uses NWR to run its Tests (which can be seen in action in this [video](http://vimeo.com/116027788))
 
 
-**How to run**
+#### See ["How to run"](https://github.com/o2platform/nwr/issues/34) 
 
-```
-git clone https://github.com/o2platform/webkit-repl-repl.git
-cd webkit-repl
-npm install 
-```
+For better instructions than the ones shown below.
+
+If you would like to help. [Here is the issue](https://github.com/o2platform/nwr/issues/35) to fix this README :) 
 
 **(NOTE: these instructions and screenshots are a bit out-of-date with the latest version)**
 
