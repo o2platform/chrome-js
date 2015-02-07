@@ -1,26 +1,40 @@
-NWR - Node-WebKit-REPL [![Build Status](https://travis-ci.org/o2platform/nwr.svg?branch=master)](https://travis-ci.org/o2platform/nwr)
+Chrome-JS [![Build Status](https://travis-ci.org/o2platform/chrome-js.svg?branch=master)](https://travis-ci.org/o2platform/chrome-js)
 ==========
 
-[![NPM](https://nodei.co/npm/nwr.png)](https://nodei.co/npm/nwr/)
+[![NPM](https://nodei.co/npm/chrome-js.png)](https://nodei.co/npm/chrome-js/)
 
-[![NPM](https://nodei.co/npm-dl/nwr.png)](https://nodei.co/npm/nwr/)
+[![NPM](https://nodei.co/npm-dl/chrome-js.png)](https://nodei.co/npm/chrome-js/)
 
-NWR is a collection of APIs and repls for [node-webkit](https://github.com/rogerwang/node-webkit)
+Chrome.js is a set of APIs that help the automations and scripting of
+Web based applications (WebSites or WebServices).
 
-[TM_4_0_QA](https://github.com/TeamMentor/TM_4_0_QA) uses NWR to run its Tests (which can be seen in action in this [video](http://vimeo.com/116027788))
+There is support for direct chrome access (via chrome debugger API) and
+[node-webkit](https://github.com/rogerwang/node-webkit)
+
+
+**Who uses it**
+[TM_4_0_QA](https://github.com/TeamMentor/TM_4_0_QA) uses chrome-js to run its Tests (which can be seen in action in this [video](http://vimeo.com/116027788))
 
 
 **How to run**
 
+Using npm:
+
+```
+npm install chrome-js --save
+```
+
+Directly:
+
 ```
 git clone https://github.com/o2platform/webkit-repl-repl.git
 cd webkit-repl
-npm install 
+npm install
 ```
 
 **(NOTE: these instructions and screenshots are a bit out-of-date with the latest version)**
 
-as per documented at https://github.com/rogerwang/node-webkit/wiki/Chromedriver you need to download the chrome driver for your platform 
+as per documented at https://github.com/rogerwang/node-webkit/wiki/Chromedriver you need to download the chrome driver for your platform
 from http://dl.node-webkit.org/v0.11.2/ and copy it into the ```./node_modules/nodewebkit/nodewebkit``` folder.
 
 In OSx the file to download is the ```chromedriver-nw-v0.11.2-osx-x64``` and you can open the folder to copy the unziped file using ```open ./node_modules/nodewebkit/nodewebkit```
@@ -34,7 +48,7 @@ coffee launch.coffee
 
 ![](https://cloud.githubusercontent.com/assets/656739/5246747/2af2d01c-7964-11e4-8747-3bdac1bda247.png)
 
-and 
+and
 
 ![](https://cloud.githubusercontent.com/assets/656739/5246763/60e65c2a-7964-11e4-8104-eaaa880d0460.png)
 
@@ -44,7 +58,7 @@ selenium server in the background)
 If you want to just open the webkit-repl without chromedriver support, just run
 
 ```
-./node_modules/.bin/nodewebkit 
+./node_modules/.bin/nodewebkit
 ```
 
 ... which should look like this:

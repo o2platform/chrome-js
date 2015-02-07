@@ -1,5 +1,5 @@
 {
-  "name": "nwr",
+  "name": "chrome-js",
   "main_": "nw-apps/REPL-GUI/index.html",
   "main": "src/api/NodeWebKit-Service",
   "single-instance": false,
@@ -8,7 +8,7 @@
     "width": 660,
     "height": 500
   },
-  "version": "0.1.8",
+  "version": "0.2.0",
   "dependencies": {
     "async": "^0.9.0",
     "chai": "^1.10.0",
