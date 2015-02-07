@@ -12,10 +12,6 @@ There is support for direct chrome access (via chrome debugger API) and
 [node-webkit](https://github.com/rogerwang/node-webkit)
 
 
-**Who uses it**
-[TM_4_0_QA](https://github.com/TeamMentor/TM_4_0_QA) uses chrome-js to run its Tests (which can be seen in action in this [video](http://vimeo.com/116027788))
-
-
 ### Installation
 
 Using npm:
@@ -26,7 +22,7 @@ npm install chrome-js --save
 
 Directly:
 
-#### See ["How to run"](https://github.com/o2platform/nwr/issues/34)
+See ["How to run"](https://github.com/o2platform/nwr/issues/34)
 
 For better instructions than the ones shown below.
 
