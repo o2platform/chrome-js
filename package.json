@@ -45,5 +45,8 @@
     "url": "https://github.com/o2platform/chrome-js/issues"
   },
   "homepage": "https://github.com/o2platform/chrome-js",
-  "description": "Chrome-JS: Set of APIs to help the automations and scripting of Web based applications (WebSites or WebServices)."
+  "description": "Chrome-JS: Set of APIs to help the automations and scripting of Web based applications (WebSites or WebServices).",
+  "devDependencies": {
+    "electron-prebuilt": "^0.29.2"
+  }
 }
